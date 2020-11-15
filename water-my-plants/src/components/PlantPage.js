@@ -7,12 +7,15 @@ const PlantPage = () => {
     const[plantList, setPlantList] = useState([])
 
     const fetchPlants = () => {
-        // make a get request
         axiosWithAuth()
-            .get()
-            .then()
-            .catch()
-    }
+            .get('/api/plants')
+            .then(res => {
+                setPlantList(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    };
 
     useEffect(() => {
         fetchPlants();

@@ -3,55 +3,59 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialPlant = {
     id: Date.now(),
-    nickname: '',
+    name: '',
     species: '',
-    waterFrequency: 0,
-    // image: ''
-}
+    water_schedule: '',
+    last_watered: '',
+    image_url: ''
+};
 
 const PlantList = ({ plants, updatePlants }) => {
+    // console.log(plants)
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
 
-    const editPlant = () => {
+    const editPlant = (plant) => {
+        // console.log(plant)
         setEditing(true);
-        setPlantToEdit();
+        setPlantToEdit(plant);
     };
 
     const saveEdit = (e) => {
         e.preventDefault();
         // make a put request
         axiosWithAuth()
-            .put()
+            .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 setEditing(false)
-                setPlantToEdit(plants.map(plant => {
+                updatePlants(plants.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
-                }))
+                }));
             })
-            .res(err => {
+            .catch(err => {
                 console.log(err)
-            })
+            });
     };
 
-    const deletePlant = (e) => {
+    const deletePlant = (plant) => {
         // make a delete request
+        console.log('delete', plant)
         axiosWithAuth()
-            .delete()
+            .delete(`api/plants/${plant.id}`)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 updatePlants(plants.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
                 console.log(err)
-            })
-    }
+            });
+    };
 
     return(
-        <div>
+        <div className="plants-wrapper">
             <p>Plants</p>
-            <ul>
+            <ul className="delete">
                 {plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
@@ -62,7 +66,7 @@ const PlantList = ({ plants, updatePlants }) => {
                             }>
                                 x
                             </span>{" "}
-                            {plant.nickname}
+                            {plant.name}
                         </span>
                     </li>
                 ))}
@@ -72,11 +76,11 @@ const PlantList = ({ plants, updatePlants }) => {
                 <form onSubmit={saveEdit}>
                     <legend>Edit Plant</legend>
                     <label>
-                        Nickname:
+                        Name:
                         <input 
                         onChange = {e =>
-                        setPlantToEdit({ ...plantToEdit, nickname: e.target.value })}
-                        value={plantToEdit.nickname}
+                        setPlantToEdit({ ...plantToEdit, name: e.target.value })}
+                        value={plantToEdit.name}
                         />
                     </label>
                     <label>
@@ -88,11 +92,19 @@ const PlantList = ({ plants, updatePlants }) => {
                         />
                     </label>
                     <label>
-                        Water Frequency:
+                        Water Schedule:
                         <input 
                         onChange = {e => 
-                        setPlantToEdit({ ...plantToEdit, waterFrequency: e.target.value})}
-                        value={plantToEdit.waterFrequency}
+                        setPlantToEdit({ ...plantToEdit, water_schedule: e.target.value})}
+                        value={plantToEdit.water_schedule}
+                        />
+                    </label>
+                    <label>
+                        Last Watered:
+                        <input 
+                        onChange = {e => 
+                        setPlantToEdit({ ...plantToEdit, last_watered: e.target.value})}
+                        value={plantToEdit.last_watered}
                         />
                     </label>
                     <div>
