@@ -13,6 +13,7 @@ const initialPlant = {
 const PlantList = ({ plants, updatePlants }) => {
     // console.log(plants)
     const[editing, setEditing] = useState(false);
+    const[adding, setAdding] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
 
     const editPlant = (plant) => {
@@ -23,7 +24,6 @@ const PlantList = ({ plants, updatePlants }) => {
 
     const saveEdit = (e) => {
         e.preventDefault();
-        // make a put request
         axiosWithAuth()
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
@@ -38,8 +38,14 @@ const PlantList = ({ plants, updatePlants }) => {
             });
     };
 
+    const addPlant = () => {
+        axiosWithAuth()
+        .post()
+        .then()
+        .catch()
+    }
+
     const deletePlant = (plant) => {
-        // make a delete request
         console.log('delete', plant)
         axiosWithAuth()
             .delete(`api/plants/${plant.id}`)
