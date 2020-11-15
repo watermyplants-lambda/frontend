@@ -108,6 +108,9 @@ const PlantList = ({ plants, updatePlants }) => {
                         />
                     </label>
                     <div>
+                        {/* render image url here */}
+                    </div>
+                    <div>
                         <button type="submit">Save</button>
                         <button onClick={() => setEditing(false)}>Cancel</button>
                     </div>

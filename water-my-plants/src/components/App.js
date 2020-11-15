@@ -13,7 +13,7 @@ function App() {
     <Router>
         <div className="App">
           <div className="header">
-            <h1>Water My Plants</h1>
+            <h1><a href="https://watermyplantslambda.netlify.app/">Water My Plants</a></h1>
             <NavBar />
           </div>
           <Switch>
