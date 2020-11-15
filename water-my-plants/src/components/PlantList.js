@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+
+// import AddPlant from './AddPlant';
 
 const initialPlant = {
     id: Date.now(),
@@ -13,11 +16,9 @@ const initialPlant = {
 const PlantList = ({ plants, updatePlants }) => {
     // console.log(plants)
     const[editing, setEditing] = useState(false);
-    const[adding, setAdding] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
 
     const editPlant = (plant) => {
-        // console.log(plant)
         setEditing(true);
         setPlantToEdit(plant);
     };
@@ -27,7 +28,6 @@ const PlantList = ({ plants, updatePlants }) => {
         axiosWithAuth()
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
-                // console.log(res)
                 setEditing(false)
                 updatePlants(plants.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
@@ -38,19 +38,11 @@ const PlantList = ({ plants, updatePlants }) => {
             });
     };
 
-    const addPlant = () => {
-        axiosWithAuth()
-        .post()
-        .then()
-        .catch()
-    }
-
     const deletePlant = (plant) => {
-        console.log('delete', plant)
+        // console.log('delete', plant)
         axiosWithAuth()
-            .delete(`api/plants/${plant.id}`)
+            .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                // console.log(res)
                 updatePlants(plants.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
@@ -61,23 +53,23 @@ const PlantList = ({ plants, updatePlants }) => {
     return(
         <div className="plants-wrapper">
             <p>Plants</p>
-            <ul className="delete">
+            <ul>
                 {plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
-                            <span onClick={e => {
+                            <span className="delete" onClick={e => {
                             e.stopPropagation();
                             deletePlant(plant);
                                 }
                             }>
-                                x
+                                X
                             </span>{" "}
                             {plant.name}
                         </span>
                     </li>
                 ))}
             </ul>
-            <button onClick={() => setEditing(true)}>Add Plant</button>
+            {/* <button onClick={() => setEditing(true)}>Add Plant</button> */}
             {editing && (
                 <form onSubmit={saveEdit}>
                     <legend>Edit Plant</legend>
@@ -116,12 +108,15 @@ const PlantList = ({ plants, updatePlants }) => {
                     <div>
                         {/* render image url here */}
                     </div>
-                    <div>
-                        <button type="submit">Save</button>
+                    <div className = "button-row">
+                        <button type="submit" onClick={saveEdit}>Save</button>
                         <button onClick={() => setEditing(false)}>Cancel</button>
                     </div>
                 </form>
             )}
+            <div />
+            <div>To delete a plant from your list, click "X".</div>
+            {/* <AddPlant initialPlant={initialPlant} plants={plants} updatePlants={updatePlants}/> */}
         </div>
     );
 };

@@ -17,7 +17,7 @@ function App() {
             <NavBar />
           </div>
           <Switch>
-            <PrivateRoute exact path="/plantpage" component={PlantPage}/>
+            <PrivateRoute exact path="/plants" component={PlantPage}/>
             <PrivateRoute exact path ="/profile" component={Profile}/>
             <Route exact page ="/" />
           </Switch>
