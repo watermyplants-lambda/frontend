@@ -6,25 +6,22 @@ export const FETCH_PLANT_FAILURE = 'FETCH_PLANT_FAILURE';
 export const POST_PLANT_START = 'POST_PLANTS_START';
 export const POST_PLANT_SUCCESS = 'POST_PLANTS_SUCCESS';
 export const POST_PLANT_FAILURE = 'POST_PLANTS_FAILURE';
-export const EDIT_PLANT_START = "EDIT_PLANT_START";
-export const EDIT_PLANT_SUCCESS = "DELETE_PLANT_SUCCESS";
-export const EDIT_PLANT_FAILURE = "EDIT_PLANT_FAILURE";
-export const DELETE_PLANT_START = "DELETE_PLANT_START";
-export const DELETE_PLANT_SUCCESS = "DELETE_PLANT_SUCCESS";
-export const DELETE_PLANT_FAILURE = "DELETE_PLANT_FAILURE";
+export const ADD_PLANT = 'ADD_PLANT';
+export const DELETE_PLANT = 'DELETE_PLANT';
+export const EDIT_PLANT = 'EDIT_PLANT';
 
-export const fetchPlants = () => dispatch => {
+
+export const fetchPlants = ({ setPlantList }) => {
     return(dispatch) => {
-        dispatch({ type: FETCH_PLANT_START })
     
         axiosWithAuth()
-            .get('api/plants')
-            .then(res => (
-                dispatch({ type: FETCH_PLANT_SUCCESS, payload: res.data })
-            ))
-            .catch(err => (
-                dispatch({ type: FETCH_PLANT_FAILURE, payload: err})
-            ))
+            .get('/api/plants')
+            .then(res => {
+                setPlantList(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 };
 
@@ -33,7 +30,7 @@ export const postPlants = (addPlant) => {
         dispatch({ type: POST_PLANT_START })
 
         axiosWithAuth()
-            .post('api/plants', addPlant)
+            .post('/api/plants', addPlant)
             .then(res => {
                 dispatch({ type: POST_PLANT_SUCCESS, payload: res.data })
             })
@@ -45,30 +42,30 @@ export const postPlants = (addPlant) => {
 
 export const editPlant = () => {
     return(dispatch) => {
-        dispatch({ type: EDIT_PLANT_START })
+        dispatch({  })
 
         axiosWithAuth()
             .put()
             .then(res => {
-                dispatch({ type: EDIT_PLANT_SUCCESS, payload: res.data })
+                dispatch({  })
             })
             .catch(err => {
-                dispatch({ type: EDIT_PLANT_FAILURE, payload: err })
+                dispatch({ })
             })
     };
 };
 
 export const deletePlant = () => {
     return(dispatch) => {
-        dispatch({ type: DELETE_PLANT_START })
+        dispatch({  })
 
         axiosWithAuth()
             .delete()
             .then(res => {
-                dispatch({ type: DELETE_PLANT_SUCCESS, payload: res.data })
+                dispatch({  })
             })
             .catch(err => {
-                dispatch({ type: DELETE_PLANT_FAILURE, payload: err })
+                dispatch({  })
             })
     };
 };
