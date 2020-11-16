@@ -64,6 +64,21 @@ const PlantList = ({ plants, updatePlants }) => {
         });
     };
 
+    const uploadedImage = React.useRef(null);
+    const imageUploader = React.useRef(null);
+    const handleImageUpload = (e) => {
+        const[file] = e.target.files;
+        if (file) {
+            const reader = new FileReader();
+            const {current} = uploadedImage;
+            current.file = file;
+            reader.onload = (e) => {
+                current.src = e.target.result;
+            }
+            reader.readAsDataURL(file)
+        }
+    };
+
     return(
         <div className="plants-wrapper">
             <p>Plants</p>
@@ -119,7 +134,6 @@ const PlantList = ({ plants, updatePlants }) => {
                         />
                     </label>
                     <div>
-                        {/* render image url here */}
                     </div>
                     <div className = "button-row">
                         <button type="submit">Save</button>
@@ -162,6 +176,23 @@ const PlantList = ({ plants, updatePlants }) => {
                             setAddPlant({ ...addPlant, last_watered: e.target.value})}
                             value={addPlant.last_watered}
                             />
+                        </label>
+                        <label>
+                            Upload an Image 
+                            <input 
+                                type="file" 
+                                accepts="image/*" 
+                                multiple="false"
+                                onChange={handleImageUpload}
+                                ref={imageUploader}
+                                style={{display: "none"}}
+                            />
+                            <div onClick={() => imageUploader.current.click()}>
+                                <img 
+                                    ref={uploadedImage} 
+                                    className="uploaded-image"
+                                    alt=""/>
+                            </div>
                         </label>
                         <div>
                             <button type="submit">Add Plant</button>
