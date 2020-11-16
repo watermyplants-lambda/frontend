@@ -29,6 +29,7 @@ const PlantList = ({ plants, updatePlants }) => {
             .then(res => {
                 setEditing(false)
                 updatePlants(plants.map(plant => {
+                    // console.log(plant.id)
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
             })

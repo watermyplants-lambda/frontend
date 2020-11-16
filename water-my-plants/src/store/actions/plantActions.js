@@ -45,22 +45,30 @@ export const postPlants = (addPlant) => {
 
 export const editPlant = () => {
     return(dispatch) => {
-        dispatch({ })
+        dispatch({ type: EDIT_PLANT_START })
 
         axiosWithAuth()
             .put()
-            .then()
-            .catch()
+            .then(res => {
+                dispatch({ type: EDIT_PLANT_SUCCESS, payload: res.data })
+            })
+            .catch(err => {
+                dispatch({ type: EDIT_PLANT_FAILURE, payload: err })
+            })
     };
 };
 
 export const deletePlant = () => {
     return(dispatch) => {
-        dispatch({  })
+        dispatch({ type: DELETE_PLANT_START })
 
         axiosWithAuth()
             .delete()
-            .then()
-            .catch()
+            .then(res => {
+                dispatch({ type: DELETE_PLANT_SUCCESS, payload: res.data })
+            })
+            .catch(err => {
+                dispatch({ type: DELETE_PLANT_FAILURE, payload: err })
+            })
     };
 };
