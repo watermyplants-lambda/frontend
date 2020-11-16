@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-// import AddPlant from './AddPlant';
-
 const initialPlant = {
     id: Date.now(),
     name: '',
@@ -17,6 +15,7 @@ const PlantList = ({ plants, updatePlants }) => {
     // console.log(plants)
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
+    const[addPlant, setAddPlant] = useState(initialPlant);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -39,7 +38,6 @@ const PlantList = ({ plants, updatePlants }) => {
     };
 
     const deletePlant = (plant) => {
-        // console.log('delete', plant)
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
@@ -48,6 +46,21 @@ const PlantList = ({ plants, updatePlants }) => {
             .catch(err => {
                 console.log(err)
             });
+    };
+
+    const addNewPlant = (e) => {
+        e.preventDefault();
+        axiosWithAuth()
+        .post('/api/plants', addPlant)
+        .then(res => {
+            updatePlants([
+                ...plants,
+                addPlant(res.data)
+            ])
+        })
+        .catch(err => {
+            console.log(err)
+        });
     };
 
     return(
@@ -69,7 +82,6 @@ const PlantList = ({ plants, updatePlants }) => {
                     </li>
                 ))}
             </ul>
-            {/* <button onClick={() => setEditing(true)}>Add Plant</button> */}
             {editing && (
                 <form onSubmit={saveEdit}>
                     <legend>Edit Plant</legend>
@@ -109,14 +121,52 @@ const PlantList = ({ plants, updatePlants }) => {
                         {/* render image url here */}
                     </div>
                     <div className = "button-row">
-                        <button type="submit" onClick={saveEdit}>Save</button>
+                        <button type="submit">Save</button>
                         <button onClick={() => setEditing(false)}>Cancel</button>
                     </div>
                 </form>
             )}
-            <div />
-            <div>To delete a plant from your list, click "X".</div>
-            {/* <AddPlant initialPlant={initialPlant} plants={plants} updatePlants={updatePlants}/> */}
+            <div className="spacer"/>
+            <div>
+                <form onSubmit={addNewPlant}>
+                    <legend>Add a New Plant</legend>
+                        <label>
+                            Name:
+                            <input 
+                            onChange = {e => 
+                            setAddPlant({...addPlant, name: e.target.value})}
+                            value={addPlant.name}
+                            />
+                        </label>
+                        <label>
+                            Species:
+                            <input 
+                            onChange = {e => 
+                            setAddPlant({ ...addPlant, species: e.target.value })}
+                            value={addPlant.species}
+                            />
+                        </label>
+                        <label>
+                            Water Schedule:
+                            <input 
+                            onChange = {e => 
+                            setAddPlant({ ...addPlant, water_schedule: e.target.value})}
+                            value={addPlant.water_schedule}
+                            />
+                        </label>
+                        <label>
+                            Last Watered:
+                            <input 
+                            onChange = {e => 
+                            setAddPlant({ ...addPlant, last_watered: e.target.value})}
+                            value={addPlant.last_watered}
+                            />
+                        </label>
+                        <div>
+                            <button type="submit">Add Plant</button>
+                        </div>
+                </form>
+            </div>
         </div>
     );
 };
