@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialPlant = {
@@ -11,11 +11,11 @@ const initialPlant = {
     image_url: ''
 };
 
-const PlantList = ({ plants, updatePlants }) => {
-    // console.log(plants)
+const PlantList = ({ updatePlants }) => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
+    const { plantList } = useContext(PlantContext);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -28,7 +28,7 @@ const PlantList = ({ plants, updatePlants }) => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                updatePlants(plants.map(plant => {
+                updatePlants(plantList.map(plant => {
                     // console.log(plant.id)
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
@@ -42,7 +42,7 @@ const PlantList = ({ plants, updatePlants }) => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                updatePlants(plants.filter(plant => plant.id !== res.data))
+                updatePlants(plantList.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
                 console.log(err)
@@ -55,7 +55,7 @@ const PlantList = ({ plants, updatePlants }) => {
         .post('/api/plants', addPlant)
         .then(res => {
             updatePlants([
-                ...plants,
+                ...plantList,
                 addPlant(res.data)
             ])
         })
@@ -83,7 +83,7 @@ const PlantList = ({ plants, updatePlants }) => {
         <div className="plants-wrapper">
             <p>Plants</p>
             <ul>
-                {plants.map(plant => (
+                {plantList.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
                             <span className="delete" onClick={e => {

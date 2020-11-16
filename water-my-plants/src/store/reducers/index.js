@@ -1,73 +1,21 @@
 import {
-    FETCH_PLANT_START,
-    FETCH_PLANT_SUCCESS,
-    FETCH_PLANT_FAILURE,
-    POST_PLANT_START,
-    POST_PLANT_SUCCESS,
-    POST_PLANT_FAILURE,
+    FETCH_PLANTS,
     ADD_PLANT,
     DELETE_PLANT,
     EDIT_PLANT
 } from '../actions/plantActions';
 
 const initialState = {
-    plant: [],
-    error: '',
-    isLoading: false,
-    initialPlant: {
-        id: Date.now(),
-        name: '',
-        species: '',
-        water_schedule: '',
-        last_watered: '',
-        image_url: ''
-    },
-    initialUser: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: ''
-    }
+    plant: {},
+    plants: [],
 }
 
 export const reducer = (state = initialState, action) => {
     switch ( action.type ) {
-        case FETCH_PLANT_START:
+        case FETCH_PLANTS:
             return {
                 ...state,
-                isLoading: true,
-                error: ''
-            }
-        case FETCH_PLANT_SUCCESS:
-            return {
-                ...state,
-                plant: action.payload,
-                isLoading: false,
-                error: ''
-            }
-        case FETCH_PLANT_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: action.payload
-            }
-        case POST_PLANT_START:
-            return {
-                ...state,
-                isLoading: true,
-            }
-        case POST_PLANT_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                plant: action.payload,
-                error: ''
-            }
-        case POST_PLANT_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: action.payload
+                plants: action.payload
             }
         case DELETE_PLANT:
             return {

@@ -1,23 +1,10 @@
-import React, { useState, useEffect } from 'react';
-// import { connect } from 'react-redux';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-// import { fetchPlants } from '../store/actions/plantActions';
+import React, { useEffect, useContext } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
 
 import PlantList from './PlantList';
 
 const PlantPage = () => {
-    const[plantList, setPlantList] = useState([])
-
-    const fetchPlants = () => {
-        axiosWithAuth()
-            .get('/api/plants')
-            .then(res => {
-                setPlantList(res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    };
+    const { fetchPlants } = useContext(PlantContext);
 
     useEffect(() => {
         fetchPlants();
@@ -25,20 +12,10 @@ const PlantPage = () => {
 
     return (
         <div>
-            <PlantList plants={plantList} updatePlants={setPlantList}/>
+            <PlantList />
         </div>
 
     );
 };
 
 export default PlantPage;
-
-// const mapStateToProps = (state) => {
-//     return {
-//         isFetching: state.isFetching,
-//         plants: state.plants,
-//         error: state.error
-//     }
-// };
-
-// export default connect(mapStateToProps, { fetchPlants })(PlantPage);

@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import PrivateRoute from './PrivateRoute';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { PlantContext } from '../contexts/PlantContext';
 
 import PlantPage from './PlantPage';
 import Profile from './Profile';
 import NavBar from './NavBar';
-import PrivateRoute from './PrivateRoute';
+import Footer from './Footer';
 
 import '../App.css';
 
 function App() {
+  const[plantList, setPlantList] = useState([])
+
+  const fetchPlants = () => {
+    axiosWithAuth()
+        .get('/api/plants')
+        .then(res => {
+            setPlantList(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        });
+  };
+
   return (
-    <Router>
-        <div className="App">
-          <div className="header">
-            <h1><a href="https://watermyplantslambda.netlify.app/">Water My Plants</a></h1>
-            <NavBar />
-          </div>
-          <Switch>
-            <PrivateRoute exact path="/plants" component={PlantPage}/>
-            <PrivateRoute exact path ="/profile" component={Profile}/>
-            <Route exact page ="/" />
-          </Switch>
-      </div>
-    </Router>
+    <PlantContext.Provider value={{ plantList, fetchPlants }}>
+      <Router>
+          <div className="App">
+            <div className="header">
+              <h1><a href="https://watermyplantslambda.netlify.app/">Water My Plants</a></h1>
+              <NavBar />
+            </div>
+            <Switch>
+              <PrivateRoute exact path="/plants" component={PlantPage}/>
+              <PrivateRoute exact path ="/profile" component={Profile}/>
+              <Route exact page ="/" />
+            </Switch>
+            <Footer />
+        </div>
+      </Router>
+    </PlantContext.Provider>
   );
 }
 
