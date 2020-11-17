@@ -16,7 +16,6 @@ const PlantList = () => {
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
     const { plantList, setPlantList } = useContext(PlantContext);
-    // console.log(plantList)
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -54,6 +53,7 @@ const PlantList = () => {
         axiosWithAuth()
         .post(`/api/users/${plant.id}plants`, addPlant)
         .then(res => {
+            console.log(res)
             setPlantList([
                 ...plantList,
                 addPlant(res.data)

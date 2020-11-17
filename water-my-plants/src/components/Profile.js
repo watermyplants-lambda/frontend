@@ -48,9 +48,9 @@ const Profile = () => {
 
     return (
         <div className="profile-wrapper">
-            <h1>My Profile</h1>
-                <h3>Username:{userValues.username}</h3>
-                <h3>Email:{userValues.email}</h3>
+            <h1 className="profile"> My Profile</h1>
+                <p>Username:{userValues.username}</p>
+                <p>Email:{userValues.email}</p>
                 <button onClick = {onClickEdit}>Update My Info</button>
             {update && (
                 <form className="profile-form" onSubmit = {saveNewInfo}>
