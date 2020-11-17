@@ -32,6 +32,7 @@ const SignUp = () => {
         axiosWithAuth()
             .post('/api/auth/register', newUser)
             .then((res) => {
+                window.localStorage.setItem('token', res.data.payload)
                 setSignUpUser([...signUpUser, res.data]);
                 setSignUpForm(initialSignupValues)
             })
