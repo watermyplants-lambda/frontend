@@ -97,28 +97,11 @@ const Login = () => {
                 <p>Login</p>
 
                     <div className='errors'>
-                    {/* <p>{loginFormError.firstName}</p>
-                    <p>{loginFormError.lastName}</p> */}
+                
                     <p>{loginFormError.email}</p>
                     <p>{loginFormError.password}</p>
                     </div>
-                    {/* <label>First Name
-                        <input 
-                            type='text'
-                            name='firstName'
-                            value={loginValues.firstName}
-                            onChange={onChange}
-                        />
-                    </label>
-
-                    <label>Last Name
-                        <input 
-                            type='text'
-                            name='lastName'
-                            value={loginValues.lastName}
-                            onChange={onChange}
-                        />
-                    </label> */}
+            
                     <div className="login-inputs">
                     <label className="label">Email: 
                         <input 
