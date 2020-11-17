@@ -53,8 +53,8 @@ import React, { useState } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialUser = {
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: ''
 }
@@ -65,7 +65,7 @@ const Profile = () => {
     axiosWithAuth()
         .get('/auth/users')
         .then(res => {
-            console.log(res)
+            console.log(res.data)
         })
         .catch(err => {
             console.log(err)
