@@ -15,7 +15,7 @@ const PlantList = () => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    const { plantList, setPlantList } = useContext(PlantContext);
+    const { plantList, setPlantList, userValues } = useContext(PlantContext);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -48,16 +48,17 @@ const PlantList = () => {
             });
     };
 
-    const addNewPlant = (e, user) => {
+    const addNewPlant = (e) => {
         e.preventDefault();
         axiosWithAuth()
-        .post(`/api/users/${user.id}/plants`, addPlant)
+        .post(`/api/users/${userValues.id}/plants`, addPlant)
         .then(res => {
             console.log(res)
             setPlantList([
                 ...plantList,
                 addPlant(res.data)
             ])
+            setAddPlant(initialPlant);
         })
         .catch(err => {
             console.log(err)
@@ -81,7 +82,7 @@ const PlantList = () => {
 
     return(
         <div className="plants-wrapper">
-            <p>Plants</p>
+            <p>{userValues.firstName}'s Plants!</p>
             <ul>
                 {plantList.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
