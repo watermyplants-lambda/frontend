@@ -16,6 +16,11 @@ import '../App.css';
 
 function App() {
   const[plantList, setPlantList] = useState([])
+  const [userValues, setUserValues] = useState({
+    username: '',
+    email:'',
+    password: ''
+})
 
   const fetchPlants = () => {
     axiosWithAuth()
@@ -29,7 +34,7 @@ function App() {
   };
 
   return (
-    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants }}>
+    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants, userValues, setUserValues }}>
       <Router>
           <div className="App">
             <div className="header">
@@ -37,8 +42,8 @@ function App() {
               <NavBar />
             </div>
             <Switch>
-              <Route exact path ="/login" component={Login}/>
-              <Route exact path="/signup" component={SignUp}/>
+              {/* <Route exact path ="/login" component={Login}/> */}
+              {/* <Route exact path="/signup" component={SignUp}/> */}
               <PrivateRoute exact path="/plants" component={PlantPage}/>
               <PrivateRoute exact path ="/profile" component={Profile}/>
             </Switch>

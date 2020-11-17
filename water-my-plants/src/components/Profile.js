@@ -1,15 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-
-const initialUserValues = {
-    username: '',
-    email:'',
-    password: ''
-}
+import { PlantContext } from '../contexts/PlantContext';
 
 const Profile = () => { 
     const [update, setUpdate] = useState(false)
-    const [userValues, setUserValues] = useState(initialUserValues)
+    const { userValues, setUserValues } = useContext(PlantContext);
 
     useEffect(() => {
         axiosWithAuth()
@@ -78,7 +73,10 @@ const Profile = () => {
                             onChange = {handleChange}
                         />
                     </label>
-                    <button>Save Info</button>
+                    <div className="button-row">
+                        <button>Save Info</button>
+                        <button>Cancel</button>
+                    </div>
                 </form>
             )}
         </div>

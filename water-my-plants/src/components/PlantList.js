@@ -48,10 +48,10 @@ const PlantList = () => {
             });
     };
 
-    const addNewPlant = (e, plant) => {
+    const addNewPlant = (e, user) => {
         e.preventDefault();
         axiosWithAuth()
-        .post(`/api/users/${plant.id}plants`, addPlant)
+        .post(`/api/users/${user.id}/plants`, addPlant)
         .then(res => {
             console.log(res)
             setPlantList([
