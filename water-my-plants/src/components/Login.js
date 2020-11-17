@@ -91,17 +91,17 @@ const Login = () => {
     return(
         <form onSubmit={onSubmit}>
 
-            <div className='loginPage'>
+            <div className='login-page'>
+
+                <div className='login-form'>
                 <p>Login</p>
 
-                <div className='errors'>
-                {/* <p>{loginFormError.firstName}</p>
-                <p>{loginFormError.lastName}</p> */}
-                <p>{loginFormError.email}</p>
-                <p>{loginFormError.password}</p>
-                </div>
-
-                <div className='loginForm'>
+                    <div className='errors'>
+                    {/* <p>{loginFormError.firstName}</p>
+                    <p>{loginFormError.lastName}</p> */}
+                    <p>{loginFormError.email}</p>
+                    <p>{loginFormError.password}</p>
+                    </div>
                     {/* <label>First Name
                         <input 
                             type='text'
@@ -119,8 +119,8 @@ const Login = () => {
                             onChange={onChange}
                         />
                     </label> */}
-
-                    <label>Email
+                    <div className="login-inputs">
+                    <label className="label">Email: 
                         <input 
                             type='text'
                             name='email'
@@ -129,7 +129,7 @@ const Login = () => {
                         />
                     </label>
 
-                    <label>Password
+                    <label className="label">Password: 
                         <input 
                             type='password'
                             name='password'
@@ -137,6 +137,7 @@ const Login = () => {
                             onChange={onChange}
                         />
                     </label>
+                    </div>
                     <button className='loginBttn'>Login</button>
                     {/* <button className='loginBttn' disabled={loginFormDisabled}>Login</button> */}
                 </div>
