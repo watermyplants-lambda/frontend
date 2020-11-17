@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosWithAuth from '../utils/axiosWithAuth'; 
+import axios from 'axios';
 import * as yup from 'yup';
 import SignUpValidation from './SignupValidation';
 
@@ -20,7 +21,7 @@ const initialSignupError ={
 const initialUsers=[];
 const initialSignupDisabled = true;
 
-const SignUp () => {
+const SignUp = () => {
     const [signupForm, setSignupForm] = useState(initialSignup);
     const [users, setUsers] = useState(initialUsers);
     const [signupFormErrors, setSignupFormErrors] = useState(initialSignupError);
@@ -30,7 +31,7 @@ const SignUp () => {
         axios
         .get('https://watermyplants35.herokuapp.com/auth/register') //may need to change api
         .then((res) =>{
-            setUsers(initialUsers)
+            setUsers(res.data)
         })
         .catch((err) =>{
             console.log(err,'error')
@@ -43,7 +44,8 @@ const SignUp () => {
         .post('https://watermyplants35.herokuapp.com/auth/register', newUser) //may need to change api
         .then((res) => {
             setUsers([res.data, ...users]);
-            setSignup(initialSignup);
+            setSignupForm(initialSignup);
+            
             //should this redirect to profile or home if successful
         })
         .catch((err) =>{
@@ -51,14 +53,16 @@ const SignUp () => {
         })
     }
 
-    const submitSignup = () ={
-        const newUser ={   //need to fix error of ':' expected for newUser
+
+    
+    const submitSignup = () => {
+        const newUser ={   
             firstName: signupForm.firstName.trim(),
             lastName: signupForm.lastName.trim(),
             email: signupForm.email.trim(),
             password: signupForm.password.trim(),
         }
-        saveNewUser(newUser);  //need to fix this error of ',' expected for saveNewUser
+        saveNewUser(newUser);  
     }
 
     const changeSignup = (name, value) =>{
@@ -72,9 +76,10 @@ const SignUp () => {
                 [name]: '',
             });
         })
-        .catch((err) =>{
-            setSignupFormErrors,
-            [name]; err.errors[0],
+        .catch((err) => {
+            setSignupFormErrors({
+                [name]: err.errors[0],
+            });
         });
         setSignupForm({...setSignupForm, [name]: value});
     }
@@ -95,7 +100,7 @@ const SignUp () => {
     const onChange = evt =>{
         const { name, value, type, checked } = evt.target
         const valueToUse = type === 'checkbox' ? checked : value;
-        change(name, valueToUse)
+        changeSignup(name, valueToUse)
     }
 
 
