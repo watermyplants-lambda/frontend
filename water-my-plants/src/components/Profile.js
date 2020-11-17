@@ -1,33 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { PlantContext } from '../contexts/PlantContext';
 
-
-const initialUserValues = {
-    firstName: '',
-    lastName:'',
-    email: '',
-    password: ''
-}
 
 const Profile = () => { 
     const [update, setUpdate] = useState(false)
-    const [userValues, setUserValues] = useState(initialUserValues)
+    const { userValues, setUserValues } = useContext(PlantContext);
 
     useEffect(() => {
         axiosWithAuth()
-        .get('/api/users/')
+        .get(`/api/users/${userValues.id}`)
         .then((res) => {
             setUserValues(res.data)
         })
         .catch((err) => {
             console.log(err)
         })
-    }, [])
+    },[])
 
     const saveNewInfo = (e) => {
         e.preventDefault()
         axiosWithAuth()
-        .put('/api/users/:id', userValues)
+        .put(`/api/users/${userValues.id}`, userValues)
         .then((res) => {
             setUpdate(false)
             setUserValues(res.data)
@@ -49,17 +43,9 @@ const Profile = () => {
         setUpdate(true)
     }
 
-    
-    // need to be able to update phone number and password
-    // user must be autenticated 
-    // use axiosWithAuth
-    // create form 
-    // put request 
-    // get request with url with user id to display correct user data?
-
     return (
         <div>
-            <h1>User Profile</h1>
+            <h1>My Profile</h1>
                 <h3>First Name:{userValues.firstName}</h3>
                 <h3>Last Name:{userValues.lastName}</h3>
                 <h3>Email: {userValues.email}</h3>
@@ -98,7 +84,10 @@ const Profile = () => {
                             onChange = {handleChange}
                         />
                     </label>
-                    <button>Save Info</button>
+                    <div className="button-row">
+                        <button>Save Info</button>
+                        <button>Cancel</button>
+                    </div>
                 </form>
             )}
         </div>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialPlant = {
@@ -11,11 +11,11 @@ const initialPlant = {
     image_url: ''
 };
 
-const PlantList = ({ plants, updatePlants }) => {
-    // console.log(plants)
+const PlantList = () => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
+    const { plantList, setPlantList } = useContext(PlantContext);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -28,8 +28,7 @@ const PlantList = ({ plants, updatePlants }) => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                updatePlants(plants.map(plant => {
-                    // console.log(plant.id)
+                setPlantList(plantList.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
             })
@@ -42,20 +41,21 @@ const PlantList = ({ plants, updatePlants }) => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                updatePlants(plants.filter(plant => plant.id !== res.data))
+                setPlantList(plantList.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
                 console.log(err)
             });
     };
 
-    const addNewPlant = (e) => {
+    const addNewPlant = (e, user) => {
         e.preventDefault();
         axiosWithAuth()
-        .post('/api/plants', addPlant)
+        .post(`/api/users/${user.id}/plants`, addPlant)
         .then(res => {
-            updatePlants([
-                ...plants,
+            console.log(res)
+            setPlantList([
+                ...plantList,
                 addPlant(res.data)
             ])
         })
@@ -64,11 +64,26 @@ const PlantList = ({ plants, updatePlants }) => {
         });
     };
 
+    const uploadedImage = React.useRef(null);
+    const imageUploader = React.useRef(null);
+    const handleImageUpload = (e) => {
+        const[file] = e.target.files;
+        if (file) {
+            const reader = new FileReader();
+            const {current} = uploadedImage;
+            current.file = file;
+            reader.onload = (e) => {
+                current.src = e.target.result;
+            }
+            reader.readAsDataURL(file)
+        }
+    };
+
     return(
         <div className="plants-wrapper">
             <p>Plants</p>
             <ul>
-                {plants.map(plant => (
+                {plantList.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
                             <span className="delete" onClick={e => {
@@ -119,7 +134,6 @@ const PlantList = ({ plants, updatePlants }) => {
                         />
                     </label>
                     <div>
-                        {/* render image url here */}
                     </div>
                     <div className = "button-row">
                         <button type="submit">Save</button>
@@ -162,6 +176,23 @@ const PlantList = ({ plants, updatePlants }) => {
                             setAddPlant({ ...addPlant, last_watered: e.target.value})}
                             value={addPlant.last_watered}
                             />
+                        </label>
+                        <label className="upload-image">
+                            Click here to upload an image!
+                            <input 
+                                type="file" 
+                                accepts="image/*" 
+                                multiple="false"
+                                onChange={handleImageUpload}
+                                ref={imageUploader}
+                                style={{display: "none"}}
+                            />
+                            <div onClick={() => imageUploader.current.click()}>
+                                <img 
+                                    ref={uploadedImage} 
+                                    className="uploaded-image"
+                                    alt=""/>
+                            </div>
                         </label>
                         <div>
                             <button type="submit">Add Plant</button>
