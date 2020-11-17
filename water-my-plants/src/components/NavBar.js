@@ -12,6 +12,14 @@ const NavBar = () => {
         <NavLink className="profile" to="/profile" >
           Profile
         </NavLink>
+
+        <NavLink className = 'login' to = "/login">
+          Login
+        </NavLink>
+        <NavLink className = 'signup' to = "/signup">
+          Sign Up 
+        </NavLink>
+      
       
       </div>
     );

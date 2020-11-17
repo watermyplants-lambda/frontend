@@ -44,8 +44,8 @@ function App() {
               <NavBar />
             </div>
             <Switch>
-              {/* <Route exact path ="/login" component={Login}/> */}
-              {/* <Route exact path="/signup" component={SignUp}/> */}
+              <Route exact path ="/login" component={Login}/>
+              <Route exact path="/signup" component={SignUp}/>
               <PrivateRoute exact path="/plants" component={PlantPage}/>
               <PrivateRoute exact path ="/profile" component={Profile}/>
             </Switch>
