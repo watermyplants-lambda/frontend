@@ -16,7 +16,7 @@ const Profile = () => {
         .catch((err) => {
             console.log(err)
         })
-    },[])
+    }, [])
 
     const saveNewInfo = (e) => {
         e.preventDefault()
@@ -86,7 +86,6 @@ const Profile = () => {
                     </label>
                     <div className="button-row">
                         <button>Save Info</button>
-                        <button>Cancel</button>
                     </div>
                 </form>
             )}
