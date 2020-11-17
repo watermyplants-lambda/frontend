@@ -11,11 +11,11 @@ const initialPlant = {
     image_url: ''
 };
 
-const PlantList = ({ updatePlants }) => {
+const PlantList = () => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    const { plantList } = useContext(PlantContext);
+    const { plantList, setPlantList } = useContext(PlantContext);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -28,7 +28,7 @@ const PlantList = ({ updatePlants }) => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                updatePlants(plantList.map(plant => {
+                setPlantList(plantList.map(plant => {
                     // console.log(plant.id)
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
@@ -42,7 +42,7 @@ const PlantList = ({ updatePlants }) => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                updatePlants(plantList.filter(plant => plant.id !== res.data))
+                setPlantList(plantList.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
                 console.log(err)
@@ -54,7 +54,7 @@ const PlantList = ({ updatePlants }) => {
         axiosWithAuth()
         .post('/api/plants', addPlant)
         .then(res => {
-            updatePlants([
+            setPlantList([
                 ...plantList,
                 addPlant(res.data)
             ])

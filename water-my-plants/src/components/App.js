@@ -27,7 +27,7 @@ function App() {
   };
 
   return (
-    <PlantContext.Provider value={{ plantList, fetchPlants }}>
+    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants }}>
       <Router>
           <div className="App">
             <div className="header">
