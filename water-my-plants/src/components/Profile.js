@@ -3,8 +3,9 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 
 const initialUserValues = {
-    username: '',
-    email:'',
+    firstName: '',
+    lastName:'',
+    email: '',
     password: ''
 }
 
@@ -14,7 +15,7 @@ const Profile = () => {
 
     useEffect(() => {
         axiosWithAuth()
-        .get('/') //need endpoint
+        .get('/api/users/')
         .then((res) => {
             setUserValues(res.data)
         })
@@ -26,7 +27,7 @@ const Profile = () => {
     const saveNewInfo = (e) => {
         e.preventDefault()
         axiosWithAuth()
-        .put('/', userValues) //need endpoint
+        .put('/api/users/:id', userValues)
         .then((res) => {
             setUpdate(false)
             setUserValues(res.data)
@@ -59,22 +60,31 @@ const Profile = () => {
     return (
         <div>
             <h1>User Profile</h1>
-                <h3>Username:{userValues.username}</h3>
-                <h3>Email:{userValues.email}</h3>
+                <h3>First Name:{userValues.firstName}</h3>
+                <h3>Last Name:{userValues.lastName}</h3>
+                <h3>Email: {userValues.email}</h3>
                 <button onClick = {onClickEdit}>Update My Info</button>
             {update && (
                 <form onSubmit = {saveNewInfo}>
-                    <label>Username:
+                    <label>First Name:
                         <input
                             type = 'text'
-                            name = 'username'
-                            value = {userValues.username}
+                            name = 'firstName'
+                            value = {userValues.firstName}
+                            onChange = {handleChange}
+                        />
+                    </label>
+                    <label>Last Name:
+                        <input
+                            type = 'text'
+                            name = 'lastName'
+                            value = {userValues.lastName}
                             onChange = {handleChange}
                         />
                     </label>
                     <label>Email:
                         <input
-                            type = 'text'
+                            type = 'email'
                             name = 'email'
                             value = {userValues.email}
                             onChange = {handleChange}
