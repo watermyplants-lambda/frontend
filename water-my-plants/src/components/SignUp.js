@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axiosWithAuth from '../utils/axiosWithAuth'; 
-import axios from 'axios';
 import * as yup from 'yup';
 import SignUpValidation from './SignupValidation';
 
@@ -28,10 +27,9 @@ const SignUp = () => {
     const [signupDisabled, setSignupDisabled] = useState(initialSignupDisabled)
 
     useEffect(() =>{
-        axios
-        .get('https://watermyplants35.herokuapp.com/auth/register') //may need to change api
+        axiosWithAuth.get('/api/auth/signup') 
         .then((res) =>{
-            setUsers(res.data)
+            setUsers([]);
         })
         .catch((err) =>{
             console.log(err,'error')
@@ -40,12 +38,11 @@ const SignUp = () => {
 
 
     const saveNewUser = (newUser) =>{
-        axios
-        .post('https://watermyplants35.herokuapp.com/auth/register', newUser) //may need to change api
+        axiosWithAuth.post('/api/auth/signup', newUser) //may need to change api
         .then((res) => {
             setUsers([res.data, ...users]);
             setSignupForm(initialSignup);
-            
+
             //should this redirect to profile or home if successful
         })
         .catch((err) =>{
