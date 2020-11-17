@@ -5,8 +5,8 @@ import PrivateRoute from './PrivateRoute';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
-import Login from './Login';
-import SignUp from './SignUp';
+// import Login from './Login';
+// import SignUp from './SignUp';
 import PlantPage from './PlantPage';
 import Profile from './Profile';
 import NavBar from './NavBar';
