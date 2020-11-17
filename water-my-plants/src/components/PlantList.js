@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialPlant = {
@@ -11,11 +11,12 @@ const initialPlant = {
     image_url: ''
 };
 
-const PlantList = ({ plants, updatePlants }) => {
-    // console.log(plants)
+const PlantList = () => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
+    const { plantList, setPlantList } = useContext(PlantContext);
+    // console.log(plantList)
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -28,8 +29,7 @@ const PlantList = ({ plants, updatePlants }) => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                updatePlants(plants.map(plant => {
-                    // console.log(plant.id)
+                setPlantList(plantList.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
             })
@@ -42,20 +42,20 @@ const PlantList = ({ plants, updatePlants }) => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                updatePlants(plants.filter(plant => plant.id !== res.data))
+                setPlantList(plantList.filter(plant => plant.id !== res.data))
             })
             .catch(err => {
                 console.log(err)
             });
     };
 
-    const addNewPlant = (e) => {
+    const addNewPlant = (e, plant) => {
         e.preventDefault();
         axiosWithAuth()
-        .post('/api/plants', addPlant)
+        .post(`/api/users/${plant.id}plants`, addPlant)
         .then(res => {
-            updatePlants([
-                ...plants,
+            setPlantList([
+                ...plantList,
                 addPlant(res.data)
             ])
         })
@@ -83,7 +83,7 @@ const PlantList = ({ plants, updatePlants }) => {
         <div className="plants-wrapper">
             <p>Plants</p>
             <ul>
-                {plants.map(plant => (
+                {plantList.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
                             <span className="delete" onClick={e => {
@@ -177,8 +177,8 @@ const PlantList = ({ plants, updatePlants }) => {
                             value={addPlant.last_watered}
                             />
                         </label>
-                        <label>
-                            Upload an Image 
+                        <label className="upload-image">
+                            Click here to upload an image!
                             <input 
                                 type="file" 
                                 accepts="image/*" 
