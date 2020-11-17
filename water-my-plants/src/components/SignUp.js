@@ -21,7 +21,7 @@ const initialSignupError = {
 const initialUsers = [];
 const initialSignupDisabled = true;
 
-const SignUp  = () => {
+const SignUp = () => {
     const [signupForm, setSignupForm] = useState(initialSignup);
     const [users, setUsers] = useState(initialUsers);
     const [signupFormErrors, setSignupFormErrors] = useState(initialSignupError);
@@ -30,7 +30,7 @@ const SignUp  = () => {
 
     useEffect(() =>{
         axiosWithAuth()
-        .get('/auth/register') //may need to change api
+        .get('https://watermyplants35.herokuapp.com/auth/register') //may need to change api
         .then((res) =>{
             setUsers(initialUsers)
         })
@@ -40,11 +40,11 @@ const SignUp  = () => {
     },[]);
 
 
-    const saveNewUser = (newUser) => {
+    const onSubmit = (newUser) =>{
         axiosWithAuth()
-        .post('/auth/register', newUser) //may need to change api
+        .post('api/auth/register', newUser) //may need to change api
         .then((res) => {
-            setUsers([...users, res.data]);
+            setUsers(res.data);
             setSignupForm(initialSignup);
             //should this redirect to profile or home if successful
         })
@@ -53,15 +53,15 @@ const SignUp  = () => {
         })
     }
 
-    const submitSignup = () => {
-        const newUser = ({   //need to fix error of ':' expected for newUser
-            firstName: signupForm.firstName.trim(),
-            lastName: signupForm.lastName.trim(),
-            email: signupForm.email.trim(),
-            password: signupForm.password.trim(),
-        })
-        saveNewUser(newUser);  //need to fix this error of ',' expected for saveNewUser
-    }
+    // const submitSignup = () => {
+    //     const newUser ={   //need to fix error of ':' expected for newUser
+    //         firstName: signupForm.firstName.trim(),
+    //         lastName: signupForm.lastName.trim(),
+    //         email: signupForm.email.trim(),
+    //         password: signupForm.password.trim(),
+    //     }
+    //     saveNewUser(newUser);  //need to fix this error of ',' expected for saveNewUser
+    // }
 
     const changeSignup = (name, value) => {
         //validation
@@ -75,15 +75,8 @@ const SignUp  = () => {
                 [name]: '',
             });
         })
-        .catch((err) => {
-            setSignupFormErrors({
-                ...signupFormErrors,
-                [name]: err.errors[0],
-            })
-        });
-        setSignupForm({
-            ...signupForm, 
-            [name]: value
+        .catch((err) =>{
+            console.log(err)
         });
     }
     
@@ -93,18 +86,20 @@ const SignUp  = () => {
         });
     },[signupForm]);
 
-    const onSubmit = evt =>{
-        evt.preventDefault();
-        submitSignup();
-    }
+    // const onSubmit = evt =>{
+    //     evt.preventDefault();
+    //     submitSignup();
+    // }
 
     //Need to add to check if login info is correct to be successful or not
 
     const onChange = evt =>{
-        const { name, value } = evt.target
-        changeSignup(name, value)
+        // const { name, value, type, checked } = evt.target
+        // const valueToUse = type === 'checkbox' ? checked : value;
+        // change(name, valueToUse)
+        setSignupForm({...signupForm, [evt.name]: evt.target.value})
+        changeSignup()
     }
-
 
     return(
         <form className='signup form' onSubmit={onSubmit}>
@@ -129,7 +124,7 @@ const SignUp  = () => {
                         name='firstName'
                         value={signupForm.firstName}
                         onChange={onChange}
-                        submit={submitSignup}
+                        // submit={submitSignup}
                     />
                 </label>
 
@@ -138,8 +133,8 @@ const SignUp  = () => {
                         type='text'
                         name='lastName'
                         value={signupForm.lastName}
-                        onChange={changeSignup}
-                        submit={onChange}
+                        onChange={onChange}
+                        // submit={onChange}
                     />
                 </label>
 
@@ -148,8 +143,8 @@ const SignUp  = () => {
                         type='text'
                         name='email'
                         value={signupForm.email}
-                        onChange={changeSignup}
-                        submit={onChange}
+                        onChange={onChange}
+                        // submit={onChange}
                     />
                 </label>
 
@@ -158,8 +153,8 @@ const SignUp  = () => {
                         type='password'
                         name='password'
                         value={signupForm.password}
-                        onChange={changeSignup}
-                        submit={onChange}
+                        onChange={onChange}
+                        // submit={onChange}
                     />
                 </label>
 

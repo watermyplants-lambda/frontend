@@ -44,7 +44,7 @@ body {
 }
 
 /* ------------- PLANT PAGE STYLES ------------- */
-.plantpage {
+.plantpage, .profile, .login, .signup {
   padding: 5px;
   color: white;
   text-decoration: none;

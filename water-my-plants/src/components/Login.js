@@ -17,9 +17,7 @@ const initialLoginError = {
     password: ''
 };
 
-const initialLoginDisabled = true;
-
-
+const initialLoginDisabled = true
 
 const Login = () => {
     const [loginForm, setLoginForm] = useState(initailLogin);
@@ -29,8 +27,7 @@ const Login = () => {
 
 
     const loginCheck = (loginInfo) => {
-        axiosWithAuth()
-        .get('/auth/login') //May need to rewrite api
+        axiosWithAuth.get('/api/auth/login') //May need to rewrite api
         .then((res) => {
             setUsers(res);
             //will use forEach array method to see if all values equal eachother to allow login
@@ -52,7 +49,7 @@ const Login = () => {
         .catch((err) => {
             setLoginFormError({
                 ...loginFormError,
-                [name]: err.errors[0];
+                [name]: err.errors[0]
             });
         });
         setLoginForm({...loginForm, [name]: value});
@@ -103,7 +100,7 @@ const Login = () => {
                         <input 
                             type='text'
                             name='firstName'
-                            value={login.firstName}
+                            value={loginForm.firstName}
                             onChange={onChange}
                         />
                     </label>
@@ -112,7 +109,7 @@ const Login = () => {
                         <input 
                             type='text'
                             name='lastName'
-                            value={login.lastName}
+                            value={loginForm.lastName}
                             onChange={onChange}
                         />
                     </label>
@@ -121,16 +118,16 @@ const Login = () => {
                         <input 
                             type='text'
                             name='email'
-                            value={login.email}
+                            value={loginForm.email}
                             onChange={onChange}
                         />
                     </label>
 
                     <label>Password
                         <input 
-                            type='text'
+                            type='password'
                             name='password'
-                            value={login.password}
+                            value={loginForm.password}
                             onChange={onChange}
                         />
                     </label>
