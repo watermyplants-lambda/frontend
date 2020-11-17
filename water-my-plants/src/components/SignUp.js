@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axiosWithAuth from '../utils/axiosWithAuth'; 
+import { axiosWithAuth } from '../utils/axiosWithAuth'; 
 import * as yup from 'yup';
 import SignUpValidation from '../validation/SignupValidation';
 import { useHistory } from 'react-router-dom';
 
-const initialSignup = {
+const initialSignupValues = {
     firstName: '',
     lastName: '',
     email: '',
@@ -18,97 +18,85 @@ const initialSignupError = {
     password: ''
 }
 
-const initialUsers = [];
+const initialUser=[];
 const initialSignupDisabled = true;
 
 const SignUp = () => {
-    const [signupForm, setSignupForm] = useState(initialSignup);
-    const [users, setUsers] = useState(initialUsers);
+    const [signUpForm, setSignUpForm] = useState(initialSignupValues);
+    const [signUpUser, setSignUpUser] = useState(initialUser);
     const [signupFormErrors, setSignupFormErrors] = useState(initialSignupError);
     const [signupDisabled, setSignupDisabled] = useState(initialSignupDisabled);
     const history = useHistory();
 
-    useEffect(() =>{
+    const postRegisterUser = newUser => {
         axiosWithAuth()
-        .get('https://watermyplants35.herokuapp.com/auth/register') //may need to change api
-        .then((res) =>{
-            setUsers(initialUsers)
-        })
-        .catch((err) =>{
-            console.log(err,'error')
-        })
-    },[]);
+            .post('/api/auth/register', newUser)
+            .then((res) => {
+                setSignUpUser([...signUpUser, res.data]);
+                setSignUpForm(initialSignupValues)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    };
 
-
-    const onSubmit = (newUser) =>{
-        axiosWithAuth()
-        .post('api/auth/register', newUser) //may need to change api
-        .then((res) => {
-            setUsers(res.data);
-            setSignupForm(initialSignup);
-            //should this redirect to profile or home if successful
-        })
-        .catch((err) =>{
-            console.log(err, 'error')
-        })
-    }
-
-    // const submitSignup = () => {
-    //     const newUser ={   //need to fix error of ':' expected for newUser
-    //         firstName: signupForm.firstName.trim(),
-    //         lastName: signupForm.lastName.trim(),
-    //         email: signupForm.email.trim(),
-    //         password: signupForm.password.trim(),
-    //     }
-    //     saveNewUser(newUser);  //need to fix this error of ',' expected for saveNewUser
-    // }
-
-    const changeSignup = (name, value) => {
-        //validation
+    const changeSignup = (name, value) =>{
         yup
         .reach(SignUpValidation, name)
         .validate(value)
         .then(() => {
-            //console.log(value)
             setSignupFormErrors({
                 ...signupFormErrors,
                 [name]: '',
             });
         })
         .catch((err) =>{
-            console.log(err)
+            setSignupFormErrors({
+                ...signupFormErrors,
+                [name]: err.errors[0]
+            });
         });
+        setSignUpForm({
+            ...signUpForm,
+            [name]: value
+        });
+    }
+
+    const signUpFormSubmit = () => {
+        const newUser = {
+            firstName: signUpForm.firstName.trim(),
+            lastName: signUpForm.lastName.trim(),
+            email: signUpForm.email.trim(),
+            password: signUpForm.password.trim()
+        }
+        postRegisterUser(newUser)
     }
     
     useEffect(() =>{
-        SignUpValidation.isValid(signupForm).then((valid) =>{
+        SignUpValidation.isValid(signUpForm).then((valid) =>{
             setSignupDisabled(!valid);
         });
-    },[signupForm]);
+    }, [signUpForm]);
 
-    // const onSubmit = evt =>{
-    //     evt.preventDefault();
-    //     submitSignup();
-    // }
-
-    //Need to add to check if login info is correct to be successful or not
+    const onSubmit = evt => {
+        evt.preventDefault();
+        history.push("/plants")
+        signUpFormSubmit();
+    };
 
     const onChange = evt =>{
-        // const { name, value, type, checked } = evt.target
-        // const valueToUse = type === 'checkbox' ? checked : value;
-        // change(name, valueToUse)
-        setSignupForm({...signupForm, [evt.name]: evt.target.value})
-        changeSignup()
-    }
+        const { name, value } = evt.target
+        changeSignup(name, value)
+    };
 
     return(
-        <form className='signup form' onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
             <div>
                 <p>Sign Up</p>
             </div>
-            <div className='signuperrors'>
+            <div>
 
-            <div className='errors'>
+            <div>
                 <p>{signupFormErrors.firstName}</p>
                 <p>{signupFormErrors.lastName}</p>
                 <p>{signupFormErrors.email}</p>
@@ -117,14 +105,13 @@ const SignUp = () => {
             
             
             </div>
-            <div className='signup'>
+            <div>
                 <label>First Name
                     <input 
                         type='text'
                         name='firstName'
-                        value={signupForm.firstName}
+                        value={signUpForm.firstName}
                         onChange={onChange}
-                        // submit={submitSignup}
                     />
                 </label>
 
@@ -132,9 +119,8 @@ const SignUp = () => {
                     <input 
                         type='text'
                         name='lastName'
-                        value={signupForm.lastName}
+                        value={signUpForm.lastName}
                         onChange={onChange}
-                        // submit={onChange}
                     />
                 </label>
 
@@ -142,9 +128,8 @@ const SignUp = () => {
                     <input 
                         type='text'
                         name='email'
-                        value={signupForm.email}
+                        value={signUpForm.email}
                         onChange={onChange}
-                        // submit={onChange}
                     />
                 </label>
 
@@ -152,16 +137,15 @@ const SignUp = () => {
                     <input 
                         type='password'
                         name='password'
-                        value={signupForm.password}
+                        value={signUpForm.password}
                         onChange={onChange}
-                        // submit={onChange}
                     />
                 </label>
 
-                <button className='signupBttn' type="submit" disabled={signupDisabled} >Submit</button>
+                <button>Submit</button>
             </div>
         </form>
-    )
-}
+    );
+};
 
 export default SignUp;
