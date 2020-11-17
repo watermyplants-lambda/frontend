@@ -4,7 +4,7 @@ import { PlantContext } from '../contexts/PlantContext';
 
 
 const Profile = () => { 
-    const [update, setUpdate] = useState(false)
+    const [update, setUpdate] = useState(false);
     const { userValues, setUserValues } = useContext(PlantContext);
 
     useEffect(() => {
@@ -86,6 +86,7 @@ const Profile = () => {
                     </label>
                     <div className="button-row">
                         <button>Save Info</button>
+                        <button>Cancel</button>
                     </div>
                 </form>
             )}
