@@ -4,51 +4,52 @@ import * as yup from 'yup';
 import SignUpValidation from './SignupValidation';
 
 const initialSignup ={
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: ''
 }
 
 const initialSignupError ={
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: ''
 }
 
-const initialUsers=[];
-const initialSignupDisabled = true;
+// const initialUsers=[];
+// const initialSignupDisabled = true;
 
-const SignUp = () => {
+const SignUp = (props) => {
     const [signupForm, setSignupForm] = useState(initialSignup);
-    const [users, setUsers] = useState(initialUsers);
+    // const [users, setUsers] = useState(initialUsers);
     const [signupFormErrors, setSignupFormErrors] = useState(initialSignupError);
-    const [signupDisabled, setSignupDisabled] = useState(initialSignupDisabled)
+    // const [signupDisabled, setSignupDisabled] = useState(initialSignupDisabled)
 
-    useEffect(() =>{
+    // useEffect(() =>{
+    //     axiosWithAuth()
+    //     .get('/auth/register') //may need to change api
+    //     .then((res) =>{
+    //         setUsers(initialUsers)
+    //     })
+    //     .catch((err) =>{
+    //         console.log(err,'error')
+    //     })
+    // },[]);
+
+
+    const onSubmit = (e) =>{
+        e.preventDefault()
         axiosWithAuth()
-        .get('https://watermyplants35.herokuapp.com/auth/register') //may need to change api
-        .then((res) =>{
-            setUsers(initialUsers)
-        })
-        .catch((err) =>{
-            console.log(err,'error')
-        })
-    },[]);
-
-
-    const onSubmit = (newUser) =>{
-        axiosWithAuth()
-        .post('api/auth/register', newUser) //may need to change api
+        .post('/api/auth/register', signupForm)
         .then((res) => {
-            setUsers(res.data);
-            setSignupForm(initialSignup);
-            //should this redirect to profile or home if successful
+            window.localStorage.setItem('token', res.data.payload)
+            props.history.push('/')
         })
         .catch((err) =>{
             console.log(err, 'error')
         })
+        setSignupForm(initialSignup);
     }
 
     // const submitSignup = () => {
@@ -78,11 +79,11 @@ const SignUp = () => {
         setSignupForm({...setSignupForm, [name]: value});
     }
     
-    useEffect(() =>{
-        SignUpValidation.isValid(signupForm).then((valid) =>{
-            setSignupDisabled(!valid);
-        });
-    },[signupForm]);
+    // useEffect(() =>{
+    //     SignUpValidation.isValid(signupForm).then((valid) =>{
+    //         setSignupDisabled(!valid);
+    //     });
+    // },[signupForm]);
 
     // const onSubmit = evt =>{
     //     evt.preventDefault();
@@ -95,7 +96,7 @@ const SignUp = () => {
         // const { name, value, type, checked } = evt.target
         // const valueToUse = type === 'checkbox' ? checked : value;
         // change(name, valueToUse)
-        setSignupForm({...signupForm, [evt.name]: evt.target.value})
+        // setSignupForm({...signupForm, [evt.name]: evt.target.value})
         changeSignup()
     }
 
@@ -108,8 +109,8 @@ const SignUp = () => {
             <div className='signuperrors'>
 
             <div className='errors'>
-                <p>{signupFormErrors.firstName}</p>
-                <p>{signupFormErrors.lastName}</p>
+                <p>{signupFormErrors.firstname}</p>
+                <p>{signupFormErrors.lastname}</p>
                 <p>{signupFormErrors.email}</p>
                 <p>{signupFormErrors.password}</p>
             </div>
@@ -121,7 +122,7 @@ const SignUp = () => {
                     <input 
                         type='text'
                         name='firstName'
-                        value={signupForm.firstName}
+                        value={signupForm.firstname}
                         onChange={onChange}
                         // submit={submitSignup}
                     />
@@ -131,7 +132,7 @@ const SignUp = () => {
                     <input 
                         type='text'
                         name='lastName'
-                        value={signupForm.lastName}
+                        value={signupForm.lastname}
                         onChange={onChange}
                         // submit={onChange}
                     />
@@ -149,7 +150,7 @@ const SignUp = () => {
 
                 <label>Password
                     <input 
-                        type='text'
+                        type='password'
                         name='password'
                         value={signupForm.password}
                         onChange={onChange}
@@ -157,7 +158,7 @@ const SignUp = () => {
                     />
                 </label>
 
-                <button className='signupBttn' disabled={signupDisabled} >Submit</button>
+                <button className='signupBttn' >Submit</button>
             </div>
         </form>
     )
