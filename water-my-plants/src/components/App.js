@@ -26,7 +26,6 @@ function App() {
 
   const fetchPlants = () => {
     axiosWithAuth()
-        // .get('/api/plants')
         .get(`/api/users/${userValues.id}/plants`)
         .then(res => {
             setPlantList(res.data)
@@ -47,8 +46,8 @@ function App() {
             <Switch>
               <Route exact path ="/login" component={Login}/>
               {/* <Route exact path="/signup" component={SignUp}/> */}
-              <PrivateRoute exact path="/plants" component={PlantPage}/>
-              <PrivateRoute exact path ="/profile" component={Profile}/>
+              <PrivateRoute path="/plants" component={PlantPage}/>
+              <PrivateRoute path ="/profile" component={Profile}/>
             </Switch>
             <Footer />
         </div>
