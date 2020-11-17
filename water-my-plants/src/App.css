@@ -165,8 +165,8 @@ button {
 }
 
 /* ------------- LOGIN FORM ------------- */
-.login-form {
-  height: 100%;
+.login-form, .signup-form {
+  height: 50%;
   width: 30%;
   padding: 1rem;
   margin: 2rem;
@@ -176,7 +176,7 @@ button {
   align-items: center;
 }
 
-.login-page {
+.login-page, .signup-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -184,7 +184,7 @@ button {
   align-items: center;
 }
 
-.login-inputs {
+.login-inputs, .signup-inputs {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

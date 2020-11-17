@@ -97,7 +97,6 @@ const Login = () => {
                 <p>Login</p>
 
                     <div className='errors'>
-                
                     <p>{loginFormError.email}</p>
                     <p>{loginFormError.password}</p>
                     </div>

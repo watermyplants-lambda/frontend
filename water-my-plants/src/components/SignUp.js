@@ -92,58 +92,56 @@ const SignUp = () => {
 
     return(
         <form onSubmit={onSubmit}>
-            <div>
+            <div className="signup-page">
+                <div className="signup-form">
                 <p>Sign Up</p>
-            </div>
-            <div>
 
-            <div>
-                <p>{signupFormErrors.firstName}</p>
-                <p>{signupFormErrors.lastName}</p>
-                <p>{signupFormErrors.email}</p>
-                <p>{signupFormErrors.password}</p>
-            </div>
-            
-            
-            </div>
-            <div>
-                <label>First Name
-                    <input 
-                        type='text'
-                        name='firstName'
-                        value={signUpForm.firstName}
-                        onChange={onChange}
-                    />
-                </label>
+                    <div className="errors">
+                        <p>{signupFormErrors.firstName}</p>
+                        <p>{signupFormErrors.lastName}</p>
+                        <p>{signupFormErrors.email}</p>
+                        <p>{signupFormErrors.password}</p>
+                    </div>
 
-                <label>Last Name
-                    <input 
-                        type='text'
-                        name='lastName'
-                        value={signUpForm.lastName}
-                        onChange={onChange}
-                    />
-                </label>
+                    <div className="signup-inputs">
+                        <label>First Name:
+                            <input 
+                                type='text'
+                                name='firstName'
+                                value={signUpForm.firstName}
+                                onChange={onChange}
+                            />
+                        </label>
 
-                <label>Email
-                    <input 
-                        type='text'
-                        name='email'
-                        value={signUpForm.email}
-                        onChange={onChange}
-                    />
-                </label>
+                        <label>Last Name:
+                            <input 
+                                type='text'
+                                name='lastName'
+                                value={signUpForm.lastName}
+                                onChange={onChange}
+                            />
+                        </label>
 
-                <label>Password
-                    <input 
-                        type='password'
-                        name='password'
-                        value={signUpForm.password}
-                        onChange={onChange}
-                    />
-                </label>
+                        <label>Email:
+                            <input 
+                                type='text'
+                                name='email'
+                                value={signUpForm.email}
+                                onChange={onChange}
+                            />
+                        </label>
 
-                <button>Submit</button>
+                        <label>Password:
+                            <input 
+                                type='password'
+                                name='password'
+                                value={signUpForm.password}
+                                onChange={onChange}
+                            />
+                        </label>
+                    </div>
+                    <button>Submit</button>
+                </div>
             </div>
         </form>
     );
