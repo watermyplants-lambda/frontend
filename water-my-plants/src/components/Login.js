@@ -8,12 +8,11 @@ const initailLogin ={
 }
 
 
-const Login () => {
+const Login = () => {
     const [login, setLogin] = useState(initailLogin);
     
-    
     return(
-        <form onSubmit={}>
+        <form>
             <div className='loginPage'>
                 <p>Login</p>
                 <div className='loginForm'>
@@ -51,18 +50,10 @@ const Login () => {
                     </label>
 
                     <button className='loginBttn'>Log In</button>
-
-                
                 </div>
-            
-            
-            
             </div>
-
-
-        
-        
-        
         </form>
     )
-}
+};
+
+export default Login;

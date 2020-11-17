@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-
 const initialUserValues = {
     username: '',
     email:'',
@@ -47,45 +46,14 @@ const Profile = () => {
         setUpdate(true)
     }
 
-    
-=======
-import React, { useState } from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-
-const initialUser = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: ''
-}
-
-const Profile = () => {
-    const[user, setUser] = useState(initialUser)
-
-    axiosWithAuth()
-        .get('/auth/users')
-        .then(res => {
-            console.log(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-  
-    // need to be able to update phone number and password
-    // user must be autenticated 
-    // use axiosWithAuth
-    // create form 
-    // get request with url with user id to display correct user data?
-    // put request to update user data
-
     return (
-        <div>
-            <h1>User Profile</h1>
+        <div className="profile-wrapper">
+            <h1>My Profile</h1>
                 <h3>Username:{userValues.username}</h3>
                 <h3>Email:{userValues.email}</h3>
                 <button onClick = {onClickEdit}>Update My Info</button>
             {update && (
-                <form onSubmit = {saveNewInfo}>
+                <form className="profile-form" onSubmit = {saveNewInfo}>
                     <label>Username:
                         <input
                             type = 'text'

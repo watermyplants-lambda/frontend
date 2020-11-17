@@ -177,8 +177,8 @@ const PlantList = () => {
                             value={addPlant.last_watered}
                             />
                         </label>
-                        <label>
-                            Upload an Image 
+                        <label className="upload-image">
+                            Click here to upload an image!
                             <input 
                                 type="file" 
                                 accepts="image/*" 

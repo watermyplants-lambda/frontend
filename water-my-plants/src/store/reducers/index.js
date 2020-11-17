@@ -1,47 +1,42 @@
 import {
-    FETCH_PLANTS,
     ADD_PLANT,
     DELETE_PLANT,
     EDIT_PLANT
 } from '../actions/plantActions';
 
 const initialState = {
-    plant: {},
     plants: [],
 }
 
-export const reducer = (state = initialState, action) => {
-    switch ( action.type ) {
-        case FETCH_PLANTS:
-            return {
-                ...state,
-                plants: action.payload
-            }
-        case DELETE_PLANT:
-            return {
-                ...state,
-                initialPlant: state.initialPlant.filter(plant => {
-                    return plant.id !== action.payload.id
-                })
-            }
+const reducer = (state = initialState, action) => {
+    switch(action.type){
         case ADD_PLANT:
-            return {
+            return{
                 ...state,
-            }
+                plants: [...state.plants, action.payload]
+            };
+  
         case EDIT_PLANT:
-            return {
-                ...state,
-                initialPlant: {
-                    ...state.initialPlant,
-                    name: state.name,
-                    species: state.species,
-                    water_schedule: state.water_schedule,
-                    last_watered: state.last_watered,
+            const editingPlants = action.payload;
+            const updatedPlants = state.plants.map(plant=>{
+                if(plant.id === editingPlants.id){
+                    return editingPlants;
                 }
+                return plant;
+            });
+            return{
+                ...state,
+                plants: updatedPlants
             }
-    default:
-        return state
-    };
-};
+  
+            case DELETE_PLANT:
+                return { 
+                    ...state,
+                    plants: state.plants.filter(plant => plant.id !== action.payload)
+                };
+  
+            default: return state;
+    }
+  } 
 
-export default reducer;
+  export default reducer;

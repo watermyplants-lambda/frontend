@@ -1,25 +1,8 @@
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
-export const FETCH_PLANTS = 'FETCH_PLANTS';
 export const ADD_PLANT = 'ADD_PLANT';
 export const DELETE_PLANT = 'DELETE_PLANT';
 export const EDIT_PLANT = 'EDIT_PLANT';
-
-
-export const fetchPlants = () => {
-    return(dispatch) => {
-    
-        axiosWithAuth()
-            .get('/api/plants')
-            .then(res => dispatch({
-                type: FETCH_PLANTS,
-                payload: res.data
-            }))
-            .catch(err => {
-                console.log(err)
-            })
-    }
-};
 
 export const postPlants = (addPlant) => {
     return(dispatch) => {
