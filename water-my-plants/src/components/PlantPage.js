@@ -8,7 +8,7 @@ const PlantPage = () => {
 
     useEffect(() => {
         fetchPlants();
-    }, []);
+    });
 
     return (
         <div>

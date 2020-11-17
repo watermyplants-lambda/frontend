@@ -16,6 +16,7 @@ const PlantList = () => {
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
     const { plantList, setPlantList } = useContext(PlantContext);
+    // console.log(plantList)
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -29,7 +30,6 @@ const PlantList = () => {
             .then(res => {
                 setEditing(false)
                 setPlantList(plantList.map(plant => {
-                    // console.log(plant.id)
                     return plant.id === plantToEdit.id ? res.data : plant;
                 }));
             })
@@ -49,10 +49,10 @@ const PlantList = () => {
             });
     };
 
-    const addNewPlant = (e) => {
+    const addNewPlant = (e, plant) => {
         e.preventDefault();
         axiosWithAuth()
-        .post('/api/plants', addPlant)
+        .post(`/api/users/${plant.id}plants`, addPlant)
         .then(res => {
             setPlantList([
                 ...plantList,
