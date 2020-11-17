@@ -6,6 +6,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
 import Login from './Login';
+import SignUp from './SignUp';
 import PlantPage from './PlantPage';
 import Profile from './Profile';
 import NavBar from './NavBar';
@@ -37,6 +38,7 @@ function App() {
             </div>
             <Switch>
               <Route exact path ="/login" component={Login}/>
+              <Route exact path="/signup" component={SignUp}/>
               <PrivateRoute exact path="/plants" component={PlantPage}/>
               <PrivateRoute exact path ="/profile" component={Profile}/>
             </Switch>
