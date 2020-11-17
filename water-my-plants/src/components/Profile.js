@@ -2,27 +2,29 @@ import React, {useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
+
 const Profile = () => { 
     const [update, setUpdate] = useState(false)
     const { userValues, setUserValues } = useContext(PlantContext);
 
     useEffect(() => {
         axiosWithAuth()
-        .get('/') //need endpoint
+        .get(`/api/users/${userValues.id}`)
         .then((res) => {
             setUserValues(res.data)
         })
         .catch((err) => {
             console.log(err)
         })
-    }, [])
+    },[])
 
     const saveNewInfo = (e) => {
         e.preventDefault()
         axiosWithAuth()
-        .put('/', userValues) //need endpoint
+        .put(`/api/users/${userValues.id}`, userValues)
         .then((res) => {
             setUpdate(false)
+            setUserValues(res.data)
         })
         .catch((err) => {
             console.log(err)
@@ -42,24 +44,33 @@ const Profile = () => {
     }
 
     return (
-        <div className="profile-wrapper">
-            <h1 className="profile"> My Profile</h1>
-                <p>Username:{userValues.username}</p>
-                <p>Email:{userValues.email}</p>
+        <div>
+            <h1>My Profile</h1>
+                <h3>First Name:{userValues.firstName}</h3>
+                <h3>Last Name:{userValues.lastName}</h3>
+                <h3>Email: {userValues.email}</h3>
                 <button onClick = {onClickEdit}>Update My Info</button>
             {update && (
-                <form className="profile-form" onSubmit = {saveNewInfo}>
-                    <label>Username:
+                <form onSubmit = {saveNewInfo}>
+                    <label>First Name:
                         <input
                             type = 'text'
-                            name = 'username'
-                            value = {userValues.username}
+                            name = 'firstName'
+                            value = {userValues.firstName}
+                            onChange = {handleChange}
+                        />
+                    </label>
+                    <label>Last Name:
+                        <input
+                            type = 'text'
+                            name = 'lastName'
+                            value = {userValues.lastName}
                             onChange = {handleChange}
                         />
                     </label>
                     <label>Email:
                         <input
-                            type = 'text'
+                            type = 'email'
                             name = 'email'
                             value = {userValues.email}
                             onChange = {handleChange}

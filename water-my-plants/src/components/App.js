@@ -17,7 +17,9 @@ import '../App.css';
 function App() {
   const[plantList, setPlantList] = useState([])
   const [userValues, setUserValues] = useState({
-    username: '',
+    id: Date.now(),
+    firstName: '',
+    lastName: '',
     email:'',
     password: ''
 })
