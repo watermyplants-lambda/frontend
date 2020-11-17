@@ -29,6 +29,7 @@ const Profile = () => {
         .put('/', userValues) //need endpoint
         .then((res) => {
             setUpdate(false)
+            setUserValues(res.data)
         })
         .catch((err) => {
             console.log(err)
