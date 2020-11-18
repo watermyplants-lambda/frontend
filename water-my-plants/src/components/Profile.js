@@ -2,21 +2,23 @@ import React, {useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
+const initialUser = {
+    id: Date.now(),
+    firstName: '',
+    lastName: '',
+    email:'',
+    password: ''
+}
+
 
 const Profile = () => { 
     const [update, setUpdate] = useState(false);
-    const { userValues, setUserValues } = useContext(PlantContext);
+    const [valueToEdit, setValueToEdit] = useState(initialUser);
+    const { userValues, setUserValues, fetchUsers } = useContext(PlantContext);
 
     useEffect(() => {
-        axiosWithAuth()
-        .post(`/api/users/${userValues.id}`)
-        .then((res) => {
-            setUserValues(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    })
+        fetchUsers()
+    }, [])
 
     const saveNewInfo = (e) => {
         e.preventDefault()
@@ -24,7 +26,10 @@ const Profile = () => {
         .put(`/api/users/${userValues.id}`, userValues)
         .then((res) => {
             setUpdate(false)
-            setUserValues(res.data)
+            // setUserValues(res.data)
+            setUserValues(userValues.map(value => {
+                return value.id === valueToEdit.id ? res.data : value;
+            }));
         })
         .catch((err) => {
             console.log(err)
@@ -39,8 +44,9 @@ const Profile = () => {
         })
     }
 
-    const onClickEdit = (e) => {
+    const onClickEdit = (value) => {
         setUpdate(true)
+        setValueToEdit(value)
     }
 
     return (
