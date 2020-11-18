@@ -164,7 +164,7 @@ button {
   flex-direction: column;
 }
 
-/* ------------- LOGIN FORM ------------- */
+/* ------------- LOGIN / SIGNUP FORMS ------------- */
 .login-form, .signup-form {
   height: 50%;
   width: 30%;
