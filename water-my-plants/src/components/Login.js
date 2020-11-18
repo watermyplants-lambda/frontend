@@ -28,7 +28,7 @@ const Login = () => {
     const [users, setUsers] = useState([]);
 
 
-    const loginCheck = (loginInfo) => {
+    const loginCheck = () => {
         axiosWithAuth()
         .get('/auth/login') //May need to rewrite api
         .then((res) => {
@@ -52,7 +52,7 @@ const Login = () => {
         .catch((err) => {
             setLoginFormError({
                 ...loginFormError,
-                [name]: err.errors[0];
+                [name]: err.errors[0]
             });
         });
         setLoginForm({...loginForm, [name]: value});
