@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext } from 'react';
+// import { useParams } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
@@ -14,6 +15,7 @@ const initialUser = {
 const Profile = () => { 
     const [update, setUpdate] = useState(false);
     const [valueToEdit, setValueToEdit] = useState(initialUser);
+    // const { id } = useParams();
     const { userValues, setUserValues, fetchUsers } = useContext(PlantContext);
 
     useEffect(() => {
