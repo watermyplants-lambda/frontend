@@ -3,23 +3,26 @@ import React, {useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
-const initialUser = {
-    id: null,
-    firstName: '',
-    lastName: '',
-    email:'',
-    password: ''
-}
-
-
 const Profile = () => { 
+    const { initialUser } = useContext(PlantContext);
     const [update, setUpdate] = useState(false);
+    const [userValues, setUserValues] = useState([])
     const [valueToEdit, setValueToEdit] = useState(initialUser);
-    // const { id } = useParams();
-    const { userValues, setUserValues, fetchUsers } = useContext(PlantContext);
+    // let { id } = useParams();
 
     useEffect(() => {
-        fetchUsers()
+        const fetchUsers = () => {
+            axiosWithAuth()
+              .get('/api/users')
+            //   .get(`/api/users/${id}`)
+              .then(res => {
+                setUserValues(res.data)
+            })
+            .catch(err => {
+              console.log(err)
+            });
+          };
+          fetchUsers();
     }, [])
 
     const saveNewInfo = (e) => {

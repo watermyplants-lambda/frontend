@@ -1,50 +1,39 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, useParams } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import PrivateRoute from './PrivateRoute';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
 import Login from './Login';
 import SignUp from './SignUp';
-import PlantPage from './PlantPage';
+// import PlantPage from './PlantPage';
 import Profile from './Profile';
 import NavBar from './NavBar';
 import Footer from './Footer';
 
 import '../App.css';
+import PlantList from './PlantList';
 
-const App = route => {
-  const[plantList, setPlantList] = useState([])
-  const [userValues, setUserValues] = useState([])
-  // const { id } = useParams();
+const initialPlant = {
+  id: Date.now(),
+  name: '',
+  species: '',
+  water_schedule: '',
+  last_watered: '',
+  image_url: ''
+};
 
-  const fetchUsers = () => {
-    axiosWithAuth()
-      .get('/api/users')
-      // .get(`/api/users/${id}`)
-      .then(res => {
-        setUserValues(res.data)
-    })
-    .catch(err => {
-      console.log(err)
-    });
-  };
+const initialUser = {
+  id: Date.now(),
+  firstName: '',
+  lastName: '',
+  email:'',
+  password: ''
+};
 
-  const fetchPlants = () => {
-    axiosWithAuth()
-        .get('/api/plants')
-        // .get(`/api/users/${id}/plants`)
-        .then(res => {
-            setPlantList(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        });
-  };
-
+function App() {
   return (
-    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants, userValues, setUserValues, fetchUsers }}>
+    <PlantContext.Provider value={{ initialPlant, initialUser }}>
       <Router>
           <div className="App">
             <div className="header">
@@ -54,7 +43,7 @@ const App = route => {
             <Switch>
               <Route exact path ="/login" component={Login}/>
               <Route exact path="/signup" component={SignUp}/>
-              <PrivateRoute exact path="/plants" component={PlantPage}/>
+              <PrivateRoute exact path="/plants" component={PlantList}/>
               <PrivateRoute exact path="/profile" component={Profile}/>
               {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantPage}/> */}
               {/* <PrivateRoute exact path ="/profile/:id" component={Profile}/> */}

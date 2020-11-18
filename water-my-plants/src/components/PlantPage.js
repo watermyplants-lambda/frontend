@@ -1,21 +1,21 @@
-import React, { useEffect, useContext } from 'react';
-import { PlantContext } from '../contexts/PlantContext';
+// import React, { useEffect, useContext } from 'react';
+// import { PlantContext } from '../contexts/PlantContext';
 
-import PlantList from './PlantList';
+// import PlantList from './PlantList';
 
-const PlantPage = () => {
-    const { fetchPlants } = useContext(PlantContext);
+// const PlantPage = () => {
+//     const { fetchPlants } = useContext(PlantContext);
 
-    useEffect(() => {
-        fetchPlants();
-    });
+//     useEffect(() => {
+//         fetchPlants();
+//     });
 
-    return (
-        <div>
-            <PlantList />
-        </div>
+//     return (
+//         <div>
+//             <PlantList />
+//         </div>
 
-    );
-};
+//     );
+// };
 
-export default PlantPage;
+// export default PlantPage;

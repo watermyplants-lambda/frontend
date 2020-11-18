@@ -1,23 +1,30 @@
-import React, { useContext, useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const initialPlant = {
-    id: null,
-    name: '',
-    species: '',
-    water_schedule: '',
-    last_watered: '',
-    image_url: ''
-};
-
 const PlantList = () => {
+    const { initialPlant, userValues } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    // const { id } = useParams();
-    const { plantList, setPlantList, userValues } = useContext(PlantContext);
+    const[plantList, setPlantList] = useState([])
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchPlants = () => {
+            axiosWithAuth()
+                .get('/api/plants')
+                // .get(`/api/users/${id}/plants`)
+                .then(res => {
+                    setPlantList(res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                });
+          };
+          fetchPlants();
+    })
 
     const editPlant = (plant) => {
         setEditing(true);
