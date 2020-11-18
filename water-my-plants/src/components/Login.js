@@ -33,7 +33,7 @@ const Login = () => {
         axiosWithAuth()
         .post('/api/auth/login', newLoginUser) 
         .then((res) => {
-            // console.log(res.data.token)
+            console.log(res)
             window.localStorage.setItem("token", res.data.token)
             setLoginUser([...loginUser, res.data]);
             setLoginValues(initialLoginValues)
@@ -121,7 +121,6 @@ const Login = () => {
                         />
                     </label>
                     </div>
-                    {/* <button className='loginBttn'>Login</button> */}
                     <button className='loginBttn' disabled={loginFormDisabled}>Login</button>
                 </div>
             </div>

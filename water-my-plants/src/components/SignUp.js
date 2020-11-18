@@ -32,7 +32,8 @@ const SignUp = () => {
         axiosWithAuth()
             .post('/api/auth/register', newUser)
             .then((res) => {
-                window.localStorage.setItem('token', res.data.payload)
+                console.log(res)
+                window.localStorage.setItem('token', res.data.token)
                 setSignUpUser([...signUpUser, res.data]);
                 setSignUpForm(initialSignupValues)
             })
@@ -140,7 +141,7 @@ const SignUp = () => {
                             />
                         </label>
                     </div>
-                    <button>Submit</button>
+                    <button disabled={signupDisabled}>Submit</button>
                 </div>
             </div>
         </form>

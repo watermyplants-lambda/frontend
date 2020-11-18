@@ -14,9 +14,10 @@ const PlantList = () => {
     useEffect(() => {
         const fetchPlants = () => {
             axiosWithAuth()
-                .get('/api/plants')
+                .get('/api/users/1/plants')
                 // .get(`/api/users/${id}/plants`)
                 .then(res => {
+                    console.log(res)
                     setPlantList(res.data)
                 })
                 .catch(err => {
@@ -24,9 +25,7 @@ const PlantList = () => {
                 });
           };
           fetchPlants();
-    })
-
-    // console.log(plantList)
+    }, [])
 
     const editPlant = (plant) => {
         setEditing(true);

@@ -6,13 +6,12 @@ import { PlantContext } from '../contexts/PlantContext';
 
 import Login from './Login';
 import SignUp from './SignUp';
-// import PlantPage from './PlantPage';
 import Profile from './Profile';
+import PlantList from './PlantList';
 import NavBar from './NavBar';
-// import Footer from './Footer';
+import Footer from './Footer';
 
 import '../App.css';
-import PlantList from './PlantList';
 
 const initialPlant = {
   id: Date.now(),
@@ -45,10 +44,10 @@ function App() {
               <Route exact path="/signup" component={SignUp}/>
               <PrivateRoute exact path="/plants" component={PlantList}/>
               <PrivateRoute exact path="/profile" component={Profile}/>
-              {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantPage}/> */}
+              {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantList}/> */}
               {/* <PrivateRoute exact path ="/profile/:id" component={Profile}/> */}
             </Switch>
-            {/* <Footer /> */}
+            <Footer />
         </div>
       </Router>
     </PlantContext.Provider>

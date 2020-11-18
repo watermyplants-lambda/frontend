@@ -13,9 +13,10 @@ const Profile = () => {
     useEffect(() => {
         const fetchUsers = () => {
             axiosWithAuth()
-              .get('/api/users')
+              .get('/api/users/1')
             //   .get(`/api/users/${id}`)
               .then(res => {
+                  console.log(res)
                 setUserValues(res.data)
             })
             .catch(err => {
@@ -55,14 +56,19 @@ const Profile = () => {
     }
 
     return (
-        <div>
-            <h1>My Profile</h1>
-                <h3>First Name:{userValues.firstName}</h3>
-                <h3>Last Name:{userValues.lastName}</h3>
-                <h3>Email: {userValues.email}</h3>
-                <button onClick = {onClickEdit}>Update My Info</button>
+        <div className="profile-wrapper">
+            <div className="profile-values">
+                <h2>{userValues.firstName}'s Profile</h2>
+                <div className="user">
+                    <p>First Name: {userValues.firstName}</p>
+                    <p>Last Name: {userValues.lastName}</p>
+                    <p>Email: {userValues.email}</p>
+                    <button onClick = {onClickEdit}>Update My Info</button>
+                </div>
+            </div>
+            <div className="spacer"/>
             {update && (
-                <form onSubmit = {saveNewInfo}>
+                <form className="profile-form" onSubmit = {saveNewInfo}>
                     <label>First Name:
                         <input
                             type = 'text'
@@ -97,7 +103,7 @@ const Profile = () => {
                     </label>
                     <div className="button-row">
                         <button>Save Info</button>
-                        <button>Cancel</button>
+                        <button onClick={() => setUpdate(false)}>Cancel</button>
                     </div>
                 </form>
             )}
