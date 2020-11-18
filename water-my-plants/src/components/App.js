@@ -9,7 +9,7 @@ import SignUp from './SignUp';
 // import PlantPage from './PlantPage';
 import Profile from './Profile';
 import NavBar from './NavBar';
-import Footer from './Footer';
+// import Footer from './Footer';
 
 import '../App.css';
 import PlantList from './PlantList';
@@ -48,7 +48,7 @@ function App() {
               {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantPage}/> */}
               {/* <PrivateRoute exact path ="/profile/:id" component={Profile}/> */}
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
         </div>
       </Router>
     </PlantContext.Provider>
