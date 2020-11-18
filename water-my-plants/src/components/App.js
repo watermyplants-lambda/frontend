@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useParams } from 'react-router-dom';
 
 import PrivateRoute from './PrivateRoute';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
@@ -15,7 +14,7 @@ import Footer from './Footer';
 
 import '../App.css';
 
-function App() {
+const App = route => {
   const[plantList, setPlantList] = useState([])
   const [userValues, setUserValues] = useState([])
   // const { id } = useParams();
@@ -55,8 +54,10 @@ function App() {
             <Switch>
               <Route exact path ="/login" component={Login}/>
               <Route exact path="/signup" component={SignUp}/>
-              <PrivateRoute exact path="/plants/:id" component={PlantPage}/>
-              <PrivateRoute exact path ="/profile/:id" component={Profile}/>
+              <PrivateRoute exact path="/plants" component={PlantPage}/>
+              <PrivateRoute exact path="/profile" component={Profile}/>
+              {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantPage}/> */}
+              {/* <PrivateRoute exact path ="/profile/:id" component={Profile}/> */}
             </Switch>
             <Footer />
         </div>

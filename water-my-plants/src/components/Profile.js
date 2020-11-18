@@ -4,7 +4,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
 const initialUser = {
-    id: Date.now(),
+    id: null,
     firstName: '',
     lastName: '',
     email:'',

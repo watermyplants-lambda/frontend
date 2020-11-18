@@ -39,7 +39,7 @@ const Login = () => {
             setLoginValues(initialLoginValues)
         })
         .catch((err) => {
-            console.log(err, 'error')
+            console.log(err)
         });
     };
 
@@ -64,8 +64,6 @@ const Login = () => {
 
     const loginFormSubmit = () => {
         const newLoginUser = {
-            firstname: loginValues.firstName.trim(),
-            lastname: loginValues.lastName.trim(),
             email: loginValues.email.trim(),
             password: loginValues.password.trim(),
         }
@@ -107,6 +105,7 @@ const Login = () => {
                         <input 
                             type='text'
                             name='email'
+                            id='email'
                             value={loginValues.email}
                             onChange={onChange}
                         />
@@ -116,13 +115,14 @@ const Login = () => {
                         <input 
                             type='password'
                             name='password'
+                            id='password'
                             value={loginValues.password}
                             onChange={onChange}
                         />
                     </label>
                     </div>
-                    <button className='loginBttn'>Login</button>
-                    {/* <button className='loginBttn' disabled={loginFormDisabled}>Login</button> */}
+                    {/* <button className='loginBttn'>Login</button> */}
+                    <button className='loginBttn' disabled={loginFormDisabled}>Login</button>
                 </div>
             </div>
         </form>

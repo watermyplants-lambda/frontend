@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialPlant = {
-    id: Date.now(),
+    id: null,
     name: '',
     species: '',
     water_schedule: '',
@@ -16,7 +16,7 @@ const PlantList = () => {
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    const { id } = useParams();
+    // const { id } = useParams();
     const { plantList, setPlantList, userValues } = useContext(PlantContext);
 
     const editPlant = (plant) => {
