@@ -33,7 +33,7 @@ const Login = () => {
         axiosWithAuth()
         .post('/api/auth/login', newLoginUser) 
         .then((res) => {
-            console.log(res.data.token)
+            // console.log(res.data.token)
             window.localStorage.setItem("token", res.data.token)
             setLoginUser([...loginUser, res.data]);
             setLoginValues(initialLoginValues)
