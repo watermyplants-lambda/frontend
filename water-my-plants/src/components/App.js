@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import{ useParams } from 'react-router-dom';
 
 import PrivateRoute from './PrivateRoute';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
@@ -16,18 +17,24 @@ import '../App.css';
 
 function App() {
   const[plantList, setPlantList] = useState([])
-  const [userValues, setUserValues] = useState({
-    id: Date.now(),
-    firstName: '',
-    lastName: '',
-    email:'',
-    password: ''
-})
+  const [userValues, setUserValues] = useState([])
+  // const { id } = useParams();
+
+  const fetchUsers = () => {
+    axiosWithAuth()
+      .get(`/api/users`)
+      .then(res => {
+        setUserValues(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    });
+  };
 
   const fetchPlants = () => {
     axiosWithAuth()
         .get('/api/plants')
-        // .get(`/api/users/${userValues.id}/plants`)
+        // .get(`/api/users/${id}/plants`)
         .then(res => {
             setPlantList(res.data)
         })
@@ -37,7 +44,7 @@ function App() {
   };
 
   return (
-    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants, userValues, setUserValues }}>
+    <PlantContext.Provider value={{ plantList, setPlantList, fetchPlants, userValues, setUserValues, fetchUsers }}>
       <Router>
           <div className="App">
             <div className="header">
