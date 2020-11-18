@@ -26,7 +26,8 @@ function App() {
 
   const fetchPlants = () => {
     axiosWithAuth()
-        .get(`/api/users/${userValues.id}/plants`)
+        .get('/api/plants')
+        // .get(`/api/users/${userValues.id}/plants`)
         .then(res => {
             setPlantList(res.data)
         })

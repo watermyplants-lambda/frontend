@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axiosWithAuth from '../utils/axiosWithAuth'
+import axiosWithAuth from '../utils/axiosWithAuth';
 import * as yup from 'yup';
 import LoginValidation from '../validation/LoginValidation';
 import { useHistory } from 'react-router-dom';
@@ -33,7 +33,8 @@ const Login = () => {
         axiosWithAuth()
         .post('/api/auth/login', newLoginUser) 
         .then((res) => {
-            window.localStorage.setItem("token", res.data.payload)
+            console.log(res.data.token)
+            window.localStorage.setItem("token", res.data.token)
             setLoginUser([...loginUser, res.data]);
             setLoginValues(initialLoginValues)
         })

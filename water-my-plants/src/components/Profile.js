@@ -16,7 +16,7 @@ const Profile = () => {
         .catch((err) => {
             console.log(err)
         })
-    }, [])
+    })
 
     const saveNewInfo = (e) => {
         e.preventDefault()
