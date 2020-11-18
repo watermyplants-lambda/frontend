@@ -2,51 +2,55 @@ import React, { useEffect, useState } from 'react';
 import axiosWithAuth from '../utils/axiosWithAuth';
 import * as yup from 'yup';
 import LoginValidation from '../validation/LoginValidation';
+import { useHistory } from 'react-router-dom';
 
-const initailLogin = {
+const initialLoginValues = {
     firstName: '',
     lastName: '',
     email: '',
     password: ''
 };
 
-const initialLoginError = {
+const initialLoginErrors = {
     firstName: '',
     lastName: '',
     email: '',
     password: ''
 };
 
-const initialLoginDisabled = true;
-
-
+const initialLoginDisabled = true
+const initialLoginUser = []
 
 const Login = () => {
-    const [loginForm, setLoginForm] = useState(initailLogin);
-    const [loginFormError, setLoginFormError] = useState(initialLoginError);
+    const [loginValues, setLoginValues] = useState (initialLoginValues);
+    const [loginFormError, setLoginFormError] = useState(initialLoginErrors);
     const [loginFormDisabled, setLoginFormDisabled] = useState(initialLoginDisabled);
-    const [users, setUsers] = useState([]);
+    const [loginUser, setLoginUser] = useState(initialLoginUser);
 
+    const history = useHistory();
 
-    const loginCheck = () => {
+    const postLoginUser = (newLoginUser) => {
         axiosWithAuth()
-        .get('/auth/login') //May need to rewrite api
+        .post('/api/auth/login', newLoginUser) 
         .then((res) => {
-            setUsers(res);
-            //will use forEach array method to see if all values equal eachother to allow login
+            console.log(res.data.token)
+            window.localStorage.setItem("token", res.data.token)
+            setLoginUser([...loginUser, res.data]);
+            setLoginValues(initialLoginValues)
         })
         .catch((err) => {
             console.log(err, 'error')
-        })
-    }
+        });
+    };
 
-    const editLogin = (name, value) => {
-        yup.reach(LoginValidation, name)
-        .validate(value)
-        .then(() => {
-            setLoginFormError({
-                ...loginFormError,
-                [name]: '',
+    const loginInputChange = (name, value) => {
+        yup
+            .reach(LoginValidation, name)
+            .validate(value)
+            .then(() => {
+                setLoginFormError({
+                    ...loginFormError,
+                    [name]: '',
             });
         })
         .catch((err) => {
@@ -55,96 +59,75 @@ const Login = () => {
                 [name]: err.errors[0]
             });
         });
-        setLoginForm({...loginForm, [name]: value});
-    }
+        setLoginValues({...loginValues, [name]: value});
+    };
 
-    const submitLogin = () => {
-        const info ={
-            firstname: loginForm.firstName.trim(),
-            lastname: loginForm.lastName.trim(),
-            email: loginForm.email.trim(),
-            password: loginForm.password.trim(),
+    const loginFormSubmit = () => {
+        const newLoginUser = {
+            firstname: loginValues.firstName.trim(),
+            lastname: loginValues.lastName.trim(),
+            email: loginValues.email.trim(),
+            password: loginValues.password.trim(),
         }
+        postLoginUser(newLoginUser)
     }
 
     useEffect(() =>{
-        LoginValidation.isValid(loginForm).then((valid) =>{
+        LoginValidation.isValid(loginValues).then((valid) =>{
             setLoginFormDisabled(!valid);
         })
-    }, [loginForm]);
+    }, [loginValues]);
 
     const onSubmit = evt => {
         evt.preventDefault();
-        submitLogin();
-    }
+        history.push("/plants")
+        loginFormSubmit();
+    };
 
     const onChange = evt => {
-        const { name, value, type ,checked } = evt.target;
-        const valueToUse = type === 'checkbox' ? checked : value;
-        editLogin(name, valueToUse);
-    }
+        const { name, value } = evt.target;
+        loginInputChange(name, value);
+    };
     
     return(
         <form onSubmit={onSubmit}>
 
-            <div className='loginPage'>
+            <div className='login-page'>
+
+                <div className='login-form'>
                 <p>Login</p>
 
-                <div className='errors'>
-                <p>{loginFormError.firstName}</p>
-                <p>{loginFormError.lastName}</p>
-                <p>{loginFormError.email}</p>
-                <p>{loginFormError.password}</p>
-                </div>
-
-                <div className='loginForm'>
-
-                    <label>First Name
-                        <input 
-                            type='text'
-                            name='firstName'
-                            value={login.firstName}
-                            onChange={onChange}
-                        />
-                    </label>
-
-                    <label>Last Name
-                        <input 
-                            type='text'
-                            name='lastName'
-                            value={login.lastName}
-                            onChange={onChange}
-                        />
-                    </label>
-
-                    <label>Email
+                    <div className='errors'>
+                    <p>{loginFormError.email}</p>
+                    <p>{loginFormError.password}</p>
+                    </div>
+            
+                    <div className="login-inputs">
+                    <label className="label">Email: 
                         <input 
                             type='text'
                             name='email'
-                            value={login.email}
+                            value={loginValues.email}
                             onChange={onChange}
                         />
                     </label>
 
-                    <label>Password
+                    <label className="label">Password: 
                         <input 
-                            type='text'
+                            type='password'
                             name='password'
-                            value={login.password}
+                            value={loginValues.password}
                             onChange={onChange}
                         />
                     </label>
-
-
-                    <button className='loginBttn' disabled={loginFormDisabled}>Login</button>
-
+                    </div>
+                    <button className='loginBttn'>Login</button>
+                    {/* <button className='loginBttn' disabled={loginFormDisabled}>Login</button> */}
                 </div>
-            
             </div>
-        
         </form>
-    )
-}
+    );
+};
 
 
 export default Login;

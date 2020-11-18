@@ -82,7 +82,7 @@ const PlantList = () => {
 
     return(
         <div className="plants-wrapper">
-            <p>{userValues.firstName}'s Plants!</p>
+            <p>My Plants!</p>
             <ul>
                 {plantList.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>

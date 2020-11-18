@@ -9,14 +9,14 @@ const Profile = () => {
 
     useEffect(() => {
         axiosWithAuth()
-        .get(`/api/users/${userValues.id}`)
+        .post(`/api/users/${userValues.id}`)
         .then((res) => {
             setUserValues(res.data)
         })
         .catch((err) => {
             console.log(err)
         })
-    }, [])
+    })
 
     const saveNewInfo = (e) => {
         e.preventDefault()
