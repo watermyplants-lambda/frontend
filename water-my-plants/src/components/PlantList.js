@@ -13,7 +13,6 @@ const PlantList = (props) => {
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[plantList, setPlantList] = useState([])
   
-
     useEffect(() => {
         props.fetchPlants()
     }, [props]);
@@ -118,13 +117,13 @@ const PlantList = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    console.log(state)
-    return {
-        isFetching: state.isFetching,
-        error: state.error,
-        plants: state.plants
-    };
-};
+const mapStateToProps = state => ({
+    plants: state.plants,
+    error: state.error,
+    isFetching: state.isFetching
+})
 
-export default connect(mapStateToProps, { fetchPlants })(PlantList);
+export default connect(
+    mapStateToProps, 
+    { fetchPlants }
+    )(PlantList);

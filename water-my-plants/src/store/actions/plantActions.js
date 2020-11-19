@@ -10,15 +10,14 @@ export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
 
 export const fetchPlants = () => dispatch => {
     dispatch({ type: FETCH_PLANTS_START })
-        // console.log('action id', id)
         const userID = localStorage.getItem("id")
     axiosWithAuth()
       .get(`/api/users/${userID}/plants`)
       .then(res => {
-          console.log('action', res.data)
+          console.log('fetchPlants action', res)
           dispatch({ 
               type: FETCH_PLANTS_SUCCESS, 
-              payload: res.data
+              payload: res
             })
         return {
           payload: res.id

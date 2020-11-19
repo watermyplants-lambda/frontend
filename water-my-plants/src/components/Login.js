@@ -68,13 +68,14 @@ const Login = (props) => {
         axiosWithAuth()
             .post('/api/auth/login', loginValues)
             .then(res => {
+                console.log('login data', res)
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("firstName", res.data.user.firstName);
                 localStorage.setItem("lastName", res.data.user.lastName);
                 localStorage.setItem("id", res.data.user.id);
                 localStorage.setItem("email", res.data.user.email);
                 props.login(res.data);
-                history.push('/');
+                history.push('/plants');
             })
             .catch(err => console.log(err))
         loginFormSubmit();
@@ -129,7 +130,6 @@ const mapStateToProps = (state) => {
     return {
         email: state.email,
         password: state.password,
-        // id: state.id
     };
 };
 
