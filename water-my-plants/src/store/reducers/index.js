@@ -1,7 +1,7 @@
 import {
-    ADD_PLANT,
-    DELETE_PLANT,
-    EDIT_PLANT,
+    // ADD_PLANT,
+    // DELETE_PLANT,
+    // EDIT_PLANT,
     FETCH_PLANTS_FAIL,
     FETCH_PLANTS_SUCCESS,
     FETCH_PLANTS_START,
@@ -21,13 +21,13 @@ export const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    console.log('reducer', action.payload)
     const userID = localStorage.getItem("id")
     switch(action.type){
         case LOGIN_USER:
             console.log('reducer user ID: ', userID)
             return {
-                ...state, 
+                ...state,
+                ...state.user,
                 user: {
                     firstName: action.payload.firstName,
                     lastName: action.payload.lastName,
@@ -36,42 +36,17 @@ const reducer = (state = initialState, action) => {
                 }
             };
 
-        case ADD_PLANT:
-            return{
-                ...state,
-                plants: [...state.plants, action.payload]
-            };
-  
-        case EDIT_PLANT:
-            const editingPlants = action.payload;
-            const updatedPlants = state.plants.map(plant=>{
-                if(plant.id === editingPlants.id){
-                    return editingPlants;
-                }
-                return plant;
-            });
-            return{
-                ...state,
-                plants: updatedPlants
-            };
-  
-            case DELETE_PLANT:
-                return { 
-                    ...state,
-                    plants: action.payload.filter(plant => plant.id !== action.payload)
-                };
-
             case FETCH_PLANTS_START:
                 return {
                     ...state,
-                    isLoading: true,
+                    isFetching: true,
                     error: ''
                 };
 
             case FETCH_PLANTS_FAIL:
                 return {
                     ...state,
-                    isLoading: false,
+                    isFetching: false,
                     error: action.payload
                 };
 
@@ -79,9 +54,34 @@ const reducer = (state = initialState, action) => {
                 return {
                     ...state,
                     plants: action.payload,
-                    isLoading: false,
+                    isFetching: false,
                     error: ''
             };
+
+            // case EDIT_PLANT:
+            // const editingPlants = action.payload;
+            // const updatedPlants = state.plants.map(plant=>{
+            //     if(plant.id === editingPlants.id){
+            //         return editingPlants;
+            //     }
+            //     return plant;
+            // });
+            // return{
+            //     ...state,
+            //     plants: updatedPlants
+            // };
+  
+            // case DELETE_PLANT:
+            //     return { 
+            //         ...state,
+            //         plants: action.payload.filter(plant => plant.id !== action.payload)
+            //     };
+
+            // case ADD_PLANT:
+            // return{
+            //     ...state,
+            //     plants: [...state.plants, action.payload]
+            // };
 
             default: return state;
     };

@@ -18,6 +18,12 @@ const PlantList = (props) => {
         props.fetchPlants()
     }, [props]);
 
+    // const getPlants = e => {
+    //     e.preventDefault();
+    //     props.fetchPlants();
+    // };
+
+
     const editPlant = (plant) => {
         setEditing(true);
         setPlantToEdit(plant);
@@ -52,6 +58,7 @@ const PlantList = (props) => {
     return(
         <div className="plants-wrapper">
             <p>My Plants!</p>
+            {/* <button onClick={getPlants}>Fetch My Plants Please</button> */}
             <ul>
                 {props.plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
@@ -118,13 +125,13 @@ const PlantList = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    console.log(state)
-    return {
-        isFetching: state.isFetching,
-        error: state.error,
-        plants: state.plants
-    };
-};
+const mapStateToProps = state => ({
+    plants: state.plants,
+    error: state.error,
+    isFetching: state.isFetching
+})
 
-export default connect(mapStateToProps, { fetchPlants })(PlantList);
+export default connect(
+    mapStateToProps, 
+    { fetchPlants }
+    )(PlantList);

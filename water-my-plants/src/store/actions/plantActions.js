@@ -15,10 +15,10 @@ export const fetchPlants = () => dispatch => {
     axiosWithAuth()
       .get(`/api/users/${userID}/plants`)
       .then(res => {
-          console.log('action', res.data)
+          console.log('action 1', res.data)
           dispatch({ 
               type: FETCH_PLANTS_SUCCESS, 
-              payload: res.data
+              payload: res
             })
         return {
           payload: res.id
