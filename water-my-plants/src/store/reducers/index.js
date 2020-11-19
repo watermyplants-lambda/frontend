@@ -21,11 +21,11 @@ export const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    // console.log('reducer', action.payload)
+    console.log('reducer', action.payload)
     const userID = localStorage.getItem("id")
     switch(action.type){
         case LOGIN_USER:
-            console.log('user ID: ', userID)
+            console.log('reducer user ID: ', userID)
             return {
                 ...state, 
                 user: {

@@ -7,15 +7,14 @@ const Profile = () => {
     const [update, setUpdate] = useState(false);
     const [userValues, setUserValues] = useState([])
     const [valueToEdit, setValueToEdit] = useState(initialUser);
-    // console.log(userValues)
 
     const userID = localStorage.getItem("id");
+
     useEffect(() => {
         const fetchUsers = () => {
             axiosWithAuth()
               .get(`/api/users/${userID}`)
               .then(res => {
-                //   console.log(res)
                 setUserValues(res.data)
             })
             .catch(err => {
@@ -28,7 +27,7 @@ const Profile = () => {
     const saveNewInfo = (e) => {
         e.preventDefault();
         axiosWithAuth()
-        .put(`/api/users/${userID}`, userValues)
+        .put(`/api/users/${userValues.id}`, userValues)
         .then((res) => {
             setUpdate(false)
             setUserValues(userValues.map(value => {

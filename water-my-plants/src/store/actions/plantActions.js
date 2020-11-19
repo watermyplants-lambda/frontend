@@ -15,6 +15,7 @@ export const fetchPlants = () => dispatch => {
     axiosWithAuth()
       .get(`/api/users/${userID}/plants`)
       .then(res => {
+          console.log('action', res.data)
           dispatch({ 
               type: FETCH_PLANTS_SUCCESS, 
               payload: res.data
@@ -28,6 +29,18 @@ export const fetchPlants = () => dispatch => {
       });
   };
 
+//   export const fetchPlants = () => {
+//         const userID = localStorage.getItem("id")
+//     axiosWithAuth()
+//       .get(`/api/users/${userID}/plants`)
+//       .then(res => {
+//         return {
+//           payload: res.id
+//         };
+//       })
+//       .catch(err => console.log(err));
+//   };
+
 export const login = data => dispatch => {
     dispatch({
         type: LOGIN_USER,
@@ -36,8 +49,9 @@ export const login = data => dispatch => {
 };
 
 export const postPlants = (addPlant) => dispatch => {
+    const userID = localStorage.getItem("id")
         axiosWithAuth()
-            .post('/api/users/1/plants', addPlant)
+            .post(`/api/users/${userID}/plants`, addPlant)
             .then(res => dispatch({
                 type: ADD_PLANT,
                 payload: res.data

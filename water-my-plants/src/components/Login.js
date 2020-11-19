@@ -74,7 +74,7 @@ const Login = (props) => {
                 localStorage.setItem("id", res.data.user.id);
                 localStorage.setItem("email", res.data.user.email);
                 props.login(res.data);
-                history.push('/plants');
+                history.push('/');
             })
             .catch(err => console.log(err))
         loginFormSubmit();
@@ -129,7 +129,7 @@ const mapStateToProps = (state) => {
     return {
         email: state.email,
         password: state.password,
-        id: state.id
+        // id: state.id
     };
 };
 
