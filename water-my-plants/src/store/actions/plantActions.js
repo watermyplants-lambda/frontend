@@ -10,16 +10,29 @@ export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
 
 export const fetchPlants = () => dispatch => {
     dispatch({ type: FETCH_PLANTS_START })
-
-        axiosWithAuth()
-            .get('/api/users/1/plants')
-            .then(res => {
-                dispatch({ type: FETCH_PLANTS_SUCCESS, payload: res.data})
+        // console.log('action id', id)
+        const userID = localStorage.getItem("id")
+    axiosWithAuth()
+      .get(`/api/users/${userID}/plants`)
+      .then(res => {
+          dispatch({ 
+              type: FETCH_PLANTS_SUCCESS, 
+              payload: res.data
             })
-            .catch(err => {
-                dispatch({ type: FETCH_PLANTS_FAIL, payload: err.response })
-            })
+        return {
+          payload: res.id
+        };
+      })
+      .catch(err => {
+          dispatch({ type: FETCH_PLANTS_FAIL, payload: err.message })
+      });
+  };
 
+export const login = data => dispatch => {
+    dispatch({
+        type: LOGIN_USER,
+        payload: data
+    })
 };
 
 export const postPlants = (addPlant) => dispatch => {
@@ -47,9 +60,8 @@ export const saveEdit = (plantToEdit) => dispatch => {
 };
 
 export const deletePlant = (plant) => dispatch => {
-
         axiosWithAuth()
-            .delete(`/api/plants${plant.id}`, plant)
+            .delete(`/api/plants/${plant.id}`, plant)
             .then(res => dispatch({
                 type: DELETE_PLANT,
                 payload: res.data.id
@@ -57,23 +69,4 @@ export const deletePlant = (plant) => dispatch => {
             .catch(err => {
                 console.log(err)
             })
-};
-
-export const login = data => dispatch => {
-    dispatch({
-        type: LOGIN_USER,
-        payload: data
-    })
-    // console.log('actions', data)
-}
-
-export const registerUser = () => {
-    return(dispatch) => {
-        dispatch({  })
-
-        axiosWithAuth()
-            .post()
-            .then()
-            .catch()
-    };
 };

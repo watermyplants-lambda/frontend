@@ -9,14 +9,14 @@ const initialSignupValues = {
     lastName: '',
     email: '',
     password: ''
-}
+};
 
 const initialSignupError = {
     firstName: '',
     lastName: '',
     email: '',
     password: ''
-}
+};
 
 const initialUser=[];
 const initialSignupDisabled = true;
@@ -32,7 +32,7 @@ const SignUp = () => {
         axiosWithAuth()
             .post('/api/auth/register', newUser)
             .then((res) => {
-                console.log(res)
+                // console.log(res)
                 window.localStorage.setItem('token', res.data.token)
                 setSignUpUser([...signUpUser, res.data]);
                 setSignUpForm(initialSignupValues)
@@ -62,7 +62,7 @@ const SignUp = () => {
             ...signUpForm,
             [name]: value
         });
-    }
+    };
 
     const signUpFormSubmit = () => {
         const newUser = {
@@ -72,7 +72,7 @@ const SignUp = () => {
             password: signUpForm.password.trim()
         }
         postRegisterUser(newUser)
-    }
+    };
     
     useEffect(() =>{
         SignUpValidation.isValid(signUpForm).then((valid) =>{

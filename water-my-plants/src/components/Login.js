@@ -18,7 +18,7 @@ const initialLoginErrors = {
     password: ''
 };
 
-const initialLoginDisabled = true
+const initialLoginDisabled = true;
 
 const Login = (props) => {
     const [loginValues, setLoginValues] = useState (initialLoginValues);
@@ -53,14 +53,14 @@ const Login = (props) => {
         const newLoginUser = {
             email: loginValues.email.trim(),
             password: loginValues.password.trim(),
-        }
+        };
         postLoginUser(newLoginUser)
-    }
+    };
 
     useEffect(() =>{
         LoginValidation.isValid(loginValues).then((valid) =>{
             setLoginFormDisabled(!valid);
-        })
+        });
     }, [loginValues]);
 
     const onSubmit = (evt) => {
@@ -69,8 +69,12 @@ const Login = (props) => {
             .post('/api/auth/login', loginValues)
             .then(res => {
                 localStorage.setItem("token", res.data.token);
-                props.login(res.data)
-                history.push("/plants")
+                localStorage.setItem("firstName", res.data.user.firstName);
+                localStorage.setItem("lastName", res.data.user.lastName);
+                localStorage.setItem("id", res.data.user.id);
+                localStorage.setItem("email", res.data.user.email);
+                props.login(res.data);
+                history.push('/plants');
             })
             .catch(err => console.log(err))
         loginFormSubmit();
@@ -121,4 +125,12 @@ const Login = (props) => {
     );
 };
 
-export default connect(null, { login })(Login);
+const mapStateToProps = (state) => {
+    return {
+        email: state.email,
+        password: state.password,
+        id: state.id
+    };
+};
+
+export default connect(mapStateToProps, { login })(Login);

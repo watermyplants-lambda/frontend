@@ -17,7 +17,7 @@ const AddPlant = ({ plantList, setPlantList }) => {
         axiosWithAuth()
         .post(`/api/users/1/plants`, addPlant)
         .then(res => {
-            console.log(res)
+            // console.log(res)
             setPlantList([
                 ...plantList,
                 addPlant(res.data)
@@ -41,7 +41,7 @@ const AddPlant = ({ plantList, setPlantList }) => {
                 current.src = e.target.result;
             }
             reader.readAsDataURL(file)
-        }
+        };
     };
 
     return (
@@ -102,13 +102,13 @@ const AddPlant = ({ plantList, setPlantList }) => {
                         </div>
                 </form>
             </div>
-    )
-}
+    );
+};
 
 const mapStateToProps = state => {
     return {
         plants: state.plants
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps, { postPlants })(AddPlant);

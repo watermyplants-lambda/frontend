@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useContext } from 'react';
-// import { useParams } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
@@ -8,15 +7,15 @@ const Profile = () => {
     const [update, setUpdate] = useState(false);
     const [userValues, setUserValues] = useState([])
     const [valueToEdit, setValueToEdit] = useState(initialUser);
-    // let { id } = useParams();
+    // console.log(userValues)
 
+    const userID = localStorage.getItem("id");
     useEffect(() => {
         const fetchUsers = () => {
             axiosWithAuth()
-              .get('/api/users/1')
-            //   .get(`/api/users/${id}`)
+              .get(`/api/users/${userID}`)
               .then(res => {
-                  console.log(res)
+                //   console.log(res)
                 setUserValues(res.data)
             })
             .catch(err => {
@@ -24,36 +23,35 @@ const Profile = () => {
             });
           };
           fetchUsers();
-    }, [])
+    }, [userID]);
 
     const saveNewInfo = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         axiosWithAuth()
-        .put(`/api/users/${userValues.id}`, userValues)
+        .put(`/api/users/${userID}`, userValues)
         .then((res) => {
             setUpdate(false)
-            // setUserValues(res.data)
             setUserValues(userValues.map(value => {
                 return value.id === valueToEdit.id ? res.data : value;
             }));
         })
         .catch((err) => {
             console.log(err)
-        })
-    }
+        });
+    };
 
     const handleChange = (e) => {
-        e.persist()
+        e.persist();
         setUserValues({
             ...userValues,
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     const onClickEdit = (value) => {
-        setUpdate(true)
-        setValueToEdit(value)
-    }
+        setUpdate(true);
+        setValueToEdit(value);
+    };
 
     return (
         <div className="profile-wrapper">
@@ -106,9 +104,9 @@ const Profile = () => {
                         <button onClick={() => setUpdate(false)}>Cancel</button>
                     </div>
                 </form>
-            )}
+            )};
         </div>
-    )
+    );
 };
 
 export default Profile;

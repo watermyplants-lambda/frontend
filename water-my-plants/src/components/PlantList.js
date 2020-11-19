@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
@@ -7,15 +7,16 @@ import { fetchPlants } from '../store/actions/plantActions';
 import AddPlant from './AddPlant';
 
 const PlantList = (props) => {
+    console.log(props.plants)
     const { initialPlant } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[plantList, setPlantList] = useState([])
-    // const { id } = useParams();
+  
 
     useEffect(() => {
         props.fetchPlants()
-    }, [])
+    }, [props]);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -122,7 +123,7 @@ const mapStateToProps = (state) => {
         isFetching: state.isFetching,
         error: state.error,
         plants: state.plants
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps, { fetchPlants })(PlantList);

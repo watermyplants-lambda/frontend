@@ -23,7 +23,6 @@ const initialPlant = {
 };
 
 const initialUser = {
-  id: Date.now(),
   firstName: '',
   lastName: '',
   email:'',
@@ -43,16 +42,14 @@ function App() {
             <Switch>
               <Route exact path ="/login" component={Login}/>
               <Route exact path="/signup" component={SignUp}/>
-              <PrivateRoute exact path="/plants" component={PlantList}/>
-              <PrivateRoute exact path="/profile" component={Profile}/>
-              {/* <PrivateRoute exact path="/profile/:id/plants" component={PlantList}/> */}
-              {/* <PrivateRoute exact path ="/profile/:id" component={Profile}/> */}
+              <PrivateRoute exact path="/plants/:id" component={PlantList}/>
+              <PrivateRoute exact path ="/profile/:id" component={Profile}/>
             </Switch>
             <Footer />
         </div>
       </Router>
     </PlantContext.Provider>
   );
-}
+};
 
 export default App;

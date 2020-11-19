@@ -18,13 +18,14 @@ export const initialState = {
         email: '',
         id: ''
     }
-}
+};
 
 const reducer = (state = initialState, action) => {
-    console.log('reducer', action.payload)
+    // console.log('reducer', action.payload)
+    const userID = localStorage.getItem("id")
     switch(action.type){
         case LOGIN_USER:
-            // console.log('reducer', action.payload)
+            console.log('user ID: ', userID)
             return {
                 ...state, 
                 user: {
@@ -33,7 +34,7 @@ const reducer = (state = initialState, action) => {
                     email: action.payload.email,
                     id: action.payload.id
                 }
-            }
+            };
 
         case ADD_PLANT:
             return{
@@ -52,26 +53,27 @@ const reducer = (state = initialState, action) => {
             return{
                 ...state,
                 plants: updatedPlants
-            }
+            };
   
             case DELETE_PLANT:
                 return { 
                     ...state,
                     plants: action.payload.filter(plant => plant.id !== action.payload)
                 };
+
             case FETCH_PLANTS_START:
                 return {
                     ...state,
                     isLoading: true,
                     error: ''
-                }
+                };
 
             case FETCH_PLANTS_FAIL:
                 return {
                     ...state,
                     isLoading: false,
                     error: action.payload
-                }
+                };
 
             case FETCH_PLANTS_SUCCESS:
                 return {
@@ -79,11 +81,10 @@ const reducer = (state = initialState, action) => {
                     plants: action.payload,
                     isLoading: false,
                     error: ''
-            }
+            };
 
-  
             default: return state;
-    }
-  } 
+    };
+  } ;
 
   export default reducer;
