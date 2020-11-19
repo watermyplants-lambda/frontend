@@ -13,16 +13,9 @@ const PlantList = (props) => {
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
     const[plantList, setPlantList] = useState([])
   
-
     useEffect(() => {
         props.fetchPlants()
     }, [props]);
-
-    // const getPlants = e => {
-    //     e.preventDefault();
-    //     props.fetchPlants();
-    // };
-
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -58,7 +51,6 @@ const PlantList = (props) => {
     return(
         <div className="plants-wrapper">
             <p>My Plants!</p>
-            {/* <button onClick={getPlants}>Fetch My Plants Please</button> */}
             <ul>
                 {props.plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>

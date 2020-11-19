@@ -5,7 +5,7 @@ import { PlantContext } from '../contexts/PlantContext';
 const Profile = () => { 
     const { initialUser } = useContext(PlantContext);
     const [update, setUpdate] = useState(false);
-    const [userValues, setUserValues] = useState([])
+    const [userValues, setUserValues] = useState([]);
     const [valueToEdit, setValueToEdit] = useState(initialUser);
 
     const userID = localStorage.getItem("id");
