@@ -10,6 +10,7 @@ import Profile from './Profile';
 import PlantList from './PlantList';
 import NavBar from './NavBar';
 import Footer from './Footer';
+import Logout from './logout'
 
 import '../App.css';
 
@@ -44,6 +45,7 @@ function App() {
               <Route exact path="/signup" component={SignUp}/>
               <PrivateRoute exact path="/plants/:id" component={PlantList}/>
               <PrivateRoute exact path ="/profile/:id" component={Profile}/>
+              <PrivateRoute exact path="/logout" component={Logout}/>
             </Switch>
             <Footer />
         </div>
