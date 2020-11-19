@@ -1,65 +1,71 @@
 import React, {useState, useEffect, useContext } from 'react';
-// import { useParams } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { PlantContext } from '../contexts/PlantContext';
 
-const initialUser = {
-    id: Date.now(),
-    firstName: '',
-    lastName: '',
-    email:'',
-    password: ''
-}
-
-
 const Profile = () => { 
+    const { initialUser } = useContext(PlantContext);
     const [update, setUpdate] = useState(false);
+    const [userValues, setUserValues] = useState([])
     const [valueToEdit, setValueToEdit] = useState(initialUser);
-    // const { id } = useParams();
-    const { userValues, setUserValues, fetchUsers } = useContext(PlantContext);
+
+    const userID = localStorage.getItem("id");
 
     useEffect(() => {
-        fetchUsers()
-    }, [])
+        const fetchUsers = () => {
+            axiosWithAuth()
+              .get(`/api/users/${userID}`)
+              .then(res => {
+                setUserValues(res.data)
+            })
+            .catch(err => {
+              console.log(err)
+            });
+          };
+          fetchUsers();
+    }, [userID]);
 
     const saveNewInfo = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         axiosWithAuth()
         .put(`/api/users/${userValues.id}`, userValues)
         .then((res) => {
             setUpdate(false)
-            // setUserValues(res.data)
             setUserValues(userValues.map(value => {
                 return value.id === valueToEdit.id ? res.data : value;
             }));
         })
         .catch((err) => {
             console.log(err)
-        })
-    }
+        });
+    };
 
     const handleChange = (e) => {
-        e.persist()
+        e.persist();
         setUserValues({
             ...userValues,
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     const onClickEdit = (value) => {
-        setUpdate(true)
-        setValueToEdit(value)
-    }
+        setUpdate(true);
+        setValueToEdit(value);
+    };
 
     return (
-        <div>
-            <h1>My Profile</h1>
-                <h3>First Name:{userValues.firstName}</h3>
-                <h3>Last Name:{userValues.lastName}</h3>
-                <h3>Email: {userValues.email}</h3>
-                <button onClick = {onClickEdit}>Update My Info</button>
+        <div className="profile-wrapper">
+            <div className="profile-values">
+                <h2>{userValues.firstName}'s Profile</h2>
+                <div className="user">
+                    <p>First Name: {userValues.firstName}</p>
+                    <p>Last Name: {userValues.lastName}</p>
+                    <p>Email: {userValues.email}</p>
+                    <button onClick = {onClickEdit}>Update My Info</button>
+                </div>
+            </div>
+            <div className="spacer"/>
             {update && (
-                <form onSubmit = {saveNewInfo}>
+                <form className="profile-form" onSubmit = {saveNewInfo}>
                     <label>First Name:
                         <input
                             type = 'text'
@@ -94,12 +100,12 @@ const Profile = () => {
                     </label>
                     <div className="button-row">
                         <button>Save Info</button>
-                        <button>Cancel</button>
+                        <button onClick={() => setUpdate(false)}>Cancel</button>
                     </div>
                 </form>
-            )}
+            )};
         </div>
-    )
+    );
 };
 
 export default Profile;

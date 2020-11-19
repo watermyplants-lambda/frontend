@@ -1,23 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { fetchPlants } from '../store/actions/plantActions';
+import AddPlant from './AddPlant';
 
-const initialPlant = {
-    id: Date.now(),
-    name: '',
-    species: '',
-    water_schedule: '',
-    last_watered: '',
-    image_url: ''
-};
-
-const PlantList = () => {
+const PlantList = (props) => {
+    console.log(props.plants)
+    const { initialPlant } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
-    const[addPlant, setAddPlant] = useState(initialPlant);
-    const { id } = useParams();
-    const { plantList, setPlantList, userValues } = useContext(PlantContext);
+    const[plantList, setPlantList] = useState([])
+  
+
+    useEffect(() => {
+        props.fetchPlants()
+    }, [props]);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -30,9 +29,9 @@ const PlantList = () => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                setPlantList(plantList.map(plant => {
+                props.plants.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
-                }));
+                });
             })
             .catch(err => {
                 console.log(err)
@@ -43,50 +42,18 @@ const PlantList = () => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                setPlantList(plantList.filter(plant => plant.id !== res.data))
+                props.plants.filter(plant => plant.id !== res.data)
             })
             .catch(err => {
                 console.log(err)
             });
     };
 
-    const addNewPlant = (e) => {
-        e.preventDefault();
-        axiosWithAuth()
-        .post(`/api/users/${userValues.id}/plants`, addPlant)
-        .then(res => {
-            console.log(res)
-            setPlantList([
-                ...plantList,
-                addPlant(res.data)
-            ])
-            setAddPlant(initialPlant);
-        })
-        .catch(err => {
-            console.log(err)
-        });
-    };
-
-    const uploadedImage = React.useRef(null);
-    const imageUploader = React.useRef(null);
-    const handleImageUpload = (e) => {
-        const[file] = e.target.files;
-        if (file) {
-            const reader = new FileReader();
-            const {current} = uploadedImage;
-            current.file = file;
-            reader.onload = (e) => {
-                current.src = e.target.result;
-            }
-            reader.readAsDataURL(file)
-        }
-    };
-
     return(
         <div className="plants-wrapper">
             <p>My Plants!</p>
             <ul>
-                {plantList.map(plant => (
+                {props.plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
                             <span className="delete" onClick={e => {
@@ -145,65 +112,19 @@ const PlantList = () => {
                 </form>
             )}
             <div className="spacer"/>
-            <div>
-                <form onSubmit={addNewPlant}>
-                    <legend>Add a New Plant</legend>
-                        <label>
-                            Name:
-                            <input 
-                            onChange = {e => 
-                            setAddPlant({...addPlant, name: e.target.value})}
-                            value={addPlant.name}
-                            />
-                        </label>
-                        <label>
-                            Species:
-                            <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, species: e.target.value })}
-                            value={addPlant.species}
-                            />
-                        </label>
-                        <label>
-                            Water Schedule:
-                            <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, water_schedule: e.target.value})}
-                            value={addPlant.water_schedule}
-                            />
-                        </label>
-                        <label>
-                            Last Watered:
-                            <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, last_watered: e.target.value})}
-                            value={addPlant.last_watered}
-                            />
-                        </label>
-                        <label className="upload-image">
-                            Click here to upload an image!
-                            <input 
-                                type="file" 
-                                accepts="image/*" 
-                                multiple="false"
-                                onChange={handleImageUpload}
-                                ref={imageUploader}
-                                style={{display: "none"}}
-                            />
-                            <div onClick={() => imageUploader.current.click()}>
-                                <img 
-                                    ref={uploadedImage} 
-                                    className="uploaded-image"
-                                    alt=""/>
-                            </div>
-                        </label>
-                        <div>
-                            <button type="submit">Add Plant</button>
-                        </div>
-                </form>
-            </div>
-        </div>
+            {/* <AddPlant /> */}
+            <AddPlant plants={plantList} setPlantList={setPlantList}/>
+        </div> 
     );
 };
 
-export default PlantList;
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        isFetching: state.isFetching,
+        error: state.error,
+        plants: state.plants
+    };
+};
+
+export default connect(mapStateToProps, { fetchPlants })(PlantList);
