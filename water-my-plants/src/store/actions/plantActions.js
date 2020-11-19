@@ -12,12 +12,13 @@ export const fetchPlants = () => dispatch => {
     const userID = localStorage.getItem("id")
     dispatch({ type: FETCH_PLANTS_START })
     axiosWithAuth()
-      .get(`/api/users/${userID}/plants`)
+    //   .get(`/api/users/${userID}/plants`)
+      .get('/api/plants')
       .then(res => {
-          console.log('fetchPlants action', res)
+          console.log('fetchPlants action', res.data)
           dispatch({ 
               type: FETCH_PLANTS_SUCCESS, 
-              payload: res
+              payload: res.data
             })
         return {
           payload: res.id
@@ -27,18 +28,6 @@ export const fetchPlants = () => dispatch => {
           dispatch({ type: FETCH_PLANTS_FAIL, payload: err.message })
       });
   };
-
-//   export const fetchPlants = () => {
-//         const userID = localStorage.getItem("id")
-//     axiosWithAuth()
-//       .get(`/api/users/${userID}/plants`)
-//       .then(res => {
-//         return {
-//           payload: res.id
-//         };
-//       })
-//       .catch(err => console.log(err));
-//   };
 
 export const login = data => dispatch => {
     dispatch({
