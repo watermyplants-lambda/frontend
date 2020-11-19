@@ -1,32 +1,27 @@
 import React, { useState, useContext } from 'react';
-// import { useParams } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { postPlants } from '../store/actions/plantActions';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const AddPlant = ({ plantList, setPlantList }) => {
-// const AddPlant = (props) => {
+const AddPlant = (props) => {
     const { initialPlant } = useContext(PlantContext);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    // const { id } = useParams();
 
-    const addNewPlant = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // props.postPlants();
-        axiosWithAuth()
-        .post(`/api/users/1/plants`, addPlant)
-        .then(res => {
-            // console.log(res)
-            setPlantList([
-                ...plantList,
-                addPlant(res.data)
-            ])
-            setAddPlant(initialPlant);
+        props.postPlants(addPlant);
+        resetForm();
+    };
+
+    const handleChange = (e) => {
+        setAddPlant({...addPlant, [e.target.name]: e.target.value})
+    };
+
+    const resetForm = () => {
+        setAddPlant({
+            initialPlant
         })
-        .catch(err => {
-            console.log(err)
-        });
     };
 
     const uploadedImage = React.useRef(null);
@@ -46,38 +41,34 @@ const AddPlant = ({ plantList, setPlantList }) => {
 
     return (
         <div>
-                <form onSubmit={addNewPlant}>
+                <form onSubmit={handleSubmit}>
                     <legend>Add a New Plant</legend>
                         <label>
                             Name:
-                            <input 
-                            onChange = {e => 
-                            setAddPlant({...addPlant, name: e.target.value})}
-                            value={addPlant.name}
+                            <input
+                            type="text" 
+                            onChange={handleChange}
                             />
                         </label>
                         <label>
                             Species:
                             <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, species: e.target.value })}
-                            value={addPlant.species}
+                            type="text"
+                            onChange={handleChange}
                             />
                         </label>
                         <label>
                             Water Schedule:
                             <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, water_schedule: e.target.value})}
-                            value={addPlant.water_schedule}
+                            type="text"
+                            onChange={handleChange}
                             />
                         </label>
                         <label>
                             Last Watered:
                             <input 
-                            onChange = {e => 
-                            setAddPlant({ ...addPlant, last_watered: e.target.value})}
-                            value={addPlant.last_watered}
+                            type="text"
+                            onChange={handleChange}
                             />
                         </label>
                         <label className="upload-image">
@@ -98,7 +89,7 @@ const AddPlant = ({ plantList, setPlantList }) => {
                             </div>
                         </label>
                         <div>
-                            <button type="submit">Add Plant</button>
+                            <button onClick={handleSubmit} type="submit">Add Plant</button>
                         </div>
                 </form>
             </div>

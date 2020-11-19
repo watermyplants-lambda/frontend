@@ -1,5 +1,5 @@
 import {
-    // ADD_PLANT,
+    ADD_PLANT,
     // DELETE_PLANT,
     // EDIT_PLANT,
     FETCH_PLANTS_FAIL,
@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
     const userID = localStorage.getItem("id")
     switch(action.type){
         case LOGIN_USER:
-            console.log('reducer user ID: ', userID)
+            // console.log('reducer user ID: ', userID)
             // console.log('state', state)
             return {
                 ...state,
@@ -37,8 +37,14 @@ const reducer = (state = initialState, action) => {
                 }
             };
 
+            case ADD_PLANT:
+            return{
+                ...state,
+                plants: [...state.plants, action.payload]
+            };
+
             case FETCH_PLANTS_START:
-                console.log('fetchPlants payload', action.payload)
+                // console.log('fetchPlants payload', action.payload)
                 return {
                     ...state,
                     isFetching: true,
@@ -78,12 +84,6 @@ const reducer = (state = initialState, action) => {
             //         ...state,
             //         plants: action.payload.filter(plant => plant.id !== action.payload)
             //     };
-
-            // case ADD_PLANT:
-            // return{
-            //     ...state,
-            //     plants: [...state.plants, action.payload]
-            // };
 
             default: return state;
     };

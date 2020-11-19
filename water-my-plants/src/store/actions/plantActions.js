@@ -15,7 +15,7 @@ export const fetchPlants = () => dispatch => {
     //   .get(`/api/users/${userID}/plants`)
       .get('/api/plants')
       .then(res => {
-          console.log('fetchPlants action', res.data)
+        //   console.log('fetchPlants action', res.data)
           dispatch({ 
               type: FETCH_PLANTS_SUCCESS, 
               payload: res.data

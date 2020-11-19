@@ -7,7 +7,7 @@ import { fetchPlants } from '../store/actions/plantActions';
 import AddPlant from './AddPlant';
 
 const PlantList = (props) => {
-    console.log('plantList props:', props)
+    // console.log('plantList props:', props)
     const { initialPlant } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
@@ -15,7 +15,7 @@ const PlantList = (props) => {
   
     useEffect(() => {
         props.fetchPlants()
-    }, [props]);
+    }, []);
 
     const editPlant = (plant) => {
         setEditing(true);
@@ -117,7 +117,7 @@ const PlantList = (props) => {
 };
 
 const mapStateToProps = state => {
-    console.log('mapStateToProps Plantlist: ', state)
+    // console.log('mapStateToProps Plantlist: ', state)
     return {
         plants: state.plants,
         error: state.error,
