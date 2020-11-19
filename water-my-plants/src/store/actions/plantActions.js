@@ -9,8 +9,8 @@ export const FETCH_PLANTS_FAIL = 'FETCH_PLANTS_FAIL';
 export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
 
 export const fetchPlants = () => dispatch => {
+    const userID = localStorage.getItem("id")
     dispatch({ type: FETCH_PLANTS_START })
-        const userID = localStorage.getItem("id")
     axiosWithAuth()
       .get(`/api/users/${userID}/plants`)
       .then(res => {
