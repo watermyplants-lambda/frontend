@@ -10,7 +10,8 @@ import Profile from './Profile';
 import PlantList from './PlantList';
 import NavBar from './NavBar';
 import Footer from './Footer';
-import Logout from './logout'
+import Logout from './Logout'
+import Home from './Home';
 
 import '../App.css';
 
@@ -37,10 +38,11 @@ function App() {
       <Router>
           <div className="App">
             <div className="header">
-              <h1><a href="https://watermyplantslambda.netlify.app/">Water My Plants</a></h1>
+              <h1><a href="https://watermyplantslambda.netlify.app/">WATER MY PLANTS</a></h1>
               <NavBar />
             </div>
             <Switch>
+              <Route exact path="/" component={Home}/>
               <Route exact path ="/login" component={Login}/>
               <Route exact path="/signup" component={SignUp}/>
               <PrivateRoute exact path="/plants/:id" component={PlantList}/>

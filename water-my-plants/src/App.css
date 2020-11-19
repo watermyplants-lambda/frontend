@@ -30,6 +30,7 @@ body {
   flex-direction: row;
   margin-left: 3rem;
   width: 30%;
+  font-size: 1.77rem;
 }
 
 .App a {
