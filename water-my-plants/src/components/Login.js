@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axiosWithAuth from '../utils/axiosWithAuth';
 import * as yup from 'yup';
 import LoginValidation from '../validation/LoginValidation';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../store/actions/plantActions';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialLoginValues = {
-    firstName: '',
-    lastName: '',
     email: '',
     password: ''
 };
@@ -19,28 +19,16 @@ const initialLoginErrors = {
 };
 
 const initialLoginDisabled = true
-const initialLoginUser = []
 
-const Login = () => {
+const Login = (props) => {
     const [loginValues, setLoginValues] = useState (initialLoginValues);
     const [loginFormError, setLoginFormError] = useState(initialLoginErrors);
     const [loginFormDisabled, setLoginFormDisabled] = useState(initialLoginDisabled);
-    const [loginUser, setLoginUser] = useState(initialLoginUser);
 
     const history = useHistory();
 
     const postLoginUser = (newLoginUser) => {
-        axiosWithAuth()
-        .post('/api/auth/login', newLoginUser) 
-        .then((res) => {
-            console.log(res)
-            window.localStorage.setItem("token", res.data.token)
-            setLoginUser([...loginUser, res.data]);
-            setLoginValues(initialLoginValues)
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+        props.login(newLoginUser)
     };
 
     const loginInputChange = (name, value) => {
@@ -76,20 +64,26 @@ const Login = () => {
         })
     }, [loginValues]);
 
-    const onSubmit = evt => {
+    const onSubmit = (evt) => {
         evt.preventDefault();
-        history.push("/plants")
+        axiosWithAuth()
+            .post('/api/auth/login', loginValues)
+            .then(res => {
+                localStorage.setItem("token", res.data.token);
+                props.login(res.data)
+                history.push("/plants")
+            })
+            .catch(err => console.log(err))
         loginFormSubmit();
     };
 
     const onChange = evt => {
         const { name, value } = evt.target;
         loginInputChange(name, value);
-    };
-    
+    };   
+
     return(
         <form onSubmit={onSubmit}>
-
             <div className='login-page'>
 
                 <div className='login-form'>
@@ -128,5 +122,11 @@ const Login = () => {
     );
 };
 
+const mapStateToProps = (state) => {
+    return { 
+        email: state.email,
+        password: state.password
+    }
+};
 
-export default Login;
+export default connect(mapStateToProps, { login })(Login);

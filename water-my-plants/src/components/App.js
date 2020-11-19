@@ -31,6 +31,7 @@ const initialUser = {
 };
 
 function App() {
+
   return (
     <PlantContext.Provider value={{ initialPlant, initialUser }}>
       <Router>

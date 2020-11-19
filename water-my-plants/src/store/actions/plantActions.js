@@ -3,6 +3,20 @@ import { axiosWithAuth } from '../../utils/axiosWithAuth';
 export const ADD_PLANT = 'ADD_PLANT';
 export const DELETE_PLANT = 'DELETE_PLANT';
 export const EDIT_PLANT = 'EDIT_PLANT';
+export const LOGIN_USER = 'LOGIN_USER';
+export const FETCH_PLANTS_START = 'FETCH_PLANTS_START';
+export const FETCH_PLANTS_FAIL = 'FETCH_PLANTS_FAIL';
+export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
+
+export const fetchPlants = () => {
+    return(dispatch) => {
+
+        axiosWithAuth()
+            .get('/api/users/1/plants')
+            .then()
+            .catch()
+    };
+};
 
 export const postPlants = (addPlant) => {
     return(dispatch) => {
@@ -21,13 +35,13 @@ export const postPlants = (addPlant) => {
 
 export const saveEdit = (plantToEdit) => {
     return(dispatch) => {
-        dispatch({ type: EDIT_PLANT })
 
         axiosWithAuth()
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
-            .then(res => {
-                console.log(res)
-            })
+            .then(res => dispatch({
+                type: EDIT_PLANT,
+                payload: res.data
+            }))
             .catch(err => {
                 console.log(err)
             })
@@ -40,11 +54,31 @@ export const deletePlant = (plant) => {
 
         axiosWithAuth()
             .delete(`/api/plants${plant.id}`, plant)
-            .then(res => {
-                console.log(res)
-            })
+            .then(res => dispatch({
+                type: DELETE_PLANT,
+                payload: res.data.id
+            }))
             .catch(err => {
                 console.log(err)
             })
+    };
+};
+
+export const login = data => dispatch => {
+    dispatch({
+        type: LOGIN_USER,
+        payload: data
+    })
+    // console.log('actions', data)
+}
+
+export const registerUser = () => {
+    return(dispatch) => {
+        dispatch({  })
+
+        axiosWithAuth()
+            .post()
+            .then()
+            .catch()
     };
 };

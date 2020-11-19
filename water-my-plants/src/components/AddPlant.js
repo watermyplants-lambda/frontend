@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { PlantContext } from '../contexts/PlantContext';
+import { postPlants } from '../store/actions/plantActions';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const AddPlant = ({ plantList, setPlantList }) => {
     const { initialPlant } = useContext(PlantContext);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    const { id } = useParams();
+    // const { id } = useParams();
 
     const addNewPlant = (e) => {
         e.preventDefault();
+        // postPlants();
         axiosWithAuth()
-        .post(`/api/users/${id}/plants`, addPlant)
+        .post(`/api/users/1/plants`, addPlant)
         .then(res => {
             console.log(res)
             setPlantList([
