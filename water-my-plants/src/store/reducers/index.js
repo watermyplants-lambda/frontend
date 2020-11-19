@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
             };
 
             case FETCH_PLANTS_START:
-                console.log('payload', action)
+                console.log('fetchPlants payload', action.payload)
                 return {
                     ...state,
                     isFetching: true,

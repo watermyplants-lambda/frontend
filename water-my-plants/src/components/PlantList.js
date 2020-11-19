@@ -7,7 +7,7 @@ import { fetchPlants } from '../store/actions/plantActions';
 import AddPlant from './AddPlant';
 
 const PlantList = (props) => {
-    console.log(props.plants)
+    console.log(props)
     const { initialPlant } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
@@ -111,7 +111,6 @@ const PlantList = (props) => {
                 </form>
             )}
             <div className="spacer"/>
-            {/* <AddPlant /> */}
             <AddPlant plants={plantList} setPlantList={setPlantList}/>
         </div> 
     );
