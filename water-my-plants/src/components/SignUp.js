@@ -82,8 +82,8 @@ const SignUp = () => {
 
     const onSubmit = evt => {
         evt.preventDefault();
-        history.push("/plants")
         signUpFormSubmit();
+        history.push("/plants")
     };
 
     const onChange = evt =>{

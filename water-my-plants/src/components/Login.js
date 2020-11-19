@@ -24,7 +24,6 @@ const Login = (props) => {
     const [loginValues, setLoginValues] = useState (initialLoginValues);
     const [loginFormError, setLoginFormError] = useState(initialLoginErrors);
     const [loginFormDisabled, setLoginFormDisabled] = useState(initialLoginDisabled);
-
     const history = useHistory();
 
     const postLoginUser = (newLoginUser) => {

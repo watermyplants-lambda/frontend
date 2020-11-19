@@ -21,7 +21,7 @@ export const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    console.log('reducer', action.payload)
+    // console.log('reducer', action.payload)
     switch(action.type){
         // case FETCH_PLANTS_START:
         //     return {
