@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import axiosWithAuth from '../utils/axiosWithAuth';
 import * as yup from 'yup';
 import LoginValidation from '../validation/LoginValidation';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../store/actions/plantActions';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialLoginValues = {
-    firstName: '',
-    lastName: '',
+   
     email: '',
     password: ''
 };
 
 const initialLoginErrors = {
+    id:'',
     firstName: '',
     lastName: '',
     email: '',
@@ -19,28 +21,16 @@ const initialLoginErrors = {
 };
 
 const initialLoginDisabled = true
-const initialLoginUser = []
 
-const Login = () => {
+const Login = (props) => {
     const [loginValues, setLoginValues] = useState (initialLoginValues);
     const [loginFormError, setLoginFormError] = useState(initialLoginErrors);
     const [loginFormDisabled, setLoginFormDisabled] = useState(initialLoginDisabled);
-    const [loginUser, setLoginUser] = useState(initialLoginUser);
 
     const history = useHistory();
 
     const postLoginUser = (newLoginUser) => {
-        axiosWithAuth()
-        .post('/api/auth/login', newLoginUser) 
-        .then((res) => {
-            // console.log(res.data.token)
-            window.localStorage.setItem("token", res.data.token)
-            setLoginUser([...loginUser, res.data]);
-            setLoginValues(initialLoginValues)
-        })
-        .catch((err) => {
-            console.log(err, 'error')
-        });
+        props.login(newLoginUser)
     };
 
     const loginInputChange = (name, value) => {
@@ -64,8 +54,6 @@ const Login = () => {
 
     const loginFormSubmit = () => {
         const newLoginUser = {
-            firstname: loginValues.firstName.trim(),
-            lastname: loginValues.lastName.trim(),
             email: loginValues.email.trim(),
             password: loginValues.password.trim(),
         }
@@ -78,20 +66,30 @@ const Login = () => {
         })
     }, [loginValues]);
 
-    const onSubmit = evt => {
+    const onSubmit = (evt) => {
         evt.preventDefault();
-        history.push("/plants")
+        axiosWithAuth()
+            .post('/api/auth/login', loginValues)
+            .then(res => {
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("firstName", res.data.user.firstName);
+                localStorage.setItem("lastName", res.data.user.lastName);
+                localStorage.setItem("id", res.data.user.id);
+                localStorage.setItem("email", res.data.user.email);
+                props.login(res.data)
+                history.push("/")
+            })
+            .catch(err => console.log(err))
         loginFormSubmit();
     };
 
     const onChange = evt => {
         const { name, value } = evt.target;
         loginInputChange(name, value);
-    };
-    
+    };   
+
     return(
         <form onSubmit={onSubmit}>
-
             <div className='login-page'>
 
                 <div className='login-form'>
@@ -107,6 +105,7 @@ const Login = () => {
                         <input 
                             type='text'
                             name='email'
+                            id='email'
                             value={loginValues.email}
                             onChange={onChange}
                         />
@@ -116,18 +115,24 @@ const Login = () => {
                         <input 
                             type='password'
                             name='password'
+                            id='password'
                             value={loginValues.password}
                             onChange={onChange}
                         />
                     </label>
                     </div>
-                    <button className='loginBttn'>Login</button>
-                    {/* <button className='loginBttn' disabled={loginFormDisabled}>Login</button> */}
+                    <button className='loginBttn' disabled={loginFormDisabled}>Login</button>
                 </div>
             </div>
         </form>
     );
 };
 
+const mapStateToProps = (state) => {
+    return { 
+        email: state.email,
+        password: state.password
+    }
+};
 
-export default Login;
+export default connect(mapStateToProps, { login })(Login);

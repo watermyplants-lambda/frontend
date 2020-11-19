@@ -1,15 +1,58 @@
 import {
     ADD_PLANT,
     DELETE_PLANT,
-    EDIT_PLANT
+    EDIT_PLANT,
+    // FETCH_PLANTS_FAIL,
+    // FETCH_PLANTS_SUCCESS,
+    // FETCH_PLANTS_START,
+    LOGIN_USER
 } from '../actions/plantActions';
 
-const initialState = {
+export const initialState = {
+    isFetching: true,
+    error: '',
     plants: [],
+    user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        id: ''
+    } 
 }
 
 const reducer = (state = initialState, action) => {
+    console.log('reducer', action.payload)
+    const userID = localStorage.getItem("id")
     switch(action.type){
+        // case FETCH_PLANTS_START:
+        //     return {
+        //         ...state,
+        //     }
+
+        // case FETCH_PLANTS_FAIL:
+        //     return {
+        //         ...state,
+        //         error: state.payload
+        //     }
+
+        // case FETCH_PLANTS_SUCCESS:
+        //     return {
+        //         ...state,
+        //         plants:
+        //         error: ''
+        //     }
+
+        case LOGIN_USER:
+            console.log(userID)
+            return {
+                ...state, 
+                user: {
+                    firstName: action.payload.firstName,
+                    lastName: action.payload.lastName,
+                    email: action.payload.email,
+                    id: action.payload.id
+                }
+            }
         case ADD_PLANT:
             return{
                 ...state,
