@@ -2,9 +2,9 @@ import {
     ADD_PLANT,
     DELETE_PLANT,
     EDIT_PLANT,
-    // FETCH_PLANTS_FAIL,
-    // FETCH_PLANTS_SUCCESS,
-    // FETCH_PLANTS_START,
+    FETCH_PLANTS_FAIL,
+    FETCH_PLANTS_SUCCESS,
+    FETCH_PLANTS_START,
     LOGIN_USER
 } from '../actions/plantActions';
 
@@ -21,37 +21,20 @@ export const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    // console.log('reducer', action.payload)
+    console.log('reducer', action.payload)
     switch(action.type){
-        // case FETCH_PLANTS_START:
-        //     return {
-        //         ...state,
-        //     }
-
-        // case FETCH_PLANTS_FAIL:
-        //     return {
-        //         ...state,
-        //         error: state.payload
-        //     }
-
-        // case FETCH_PLANTS_SUCCESS:
-        //     return {
-        //         ...state,
-        //         plants:
-        //         error: ''
-        //     }
-
         case LOGIN_USER:
-            // console.log(action.payload)
+            // console.log('reducer', action.payload)
             return {
                 ...state, 
                 user: {
-                    firstName: action.payload.user.firstName,
-                    lastName: action.payload.user.lastName,
-                    email: action.payload.user.email,
-                    id: action.payload.user.id
+                    firstName: action.payload.firstName,
+                    lastName: action.payload.lastName,
+                    email: action.payload.email,
+                    id: action.payload.id
                 }
             }
+
         case ADD_PLANT:
             return{
                 ...state,
@@ -74,8 +57,30 @@ const reducer = (state = initialState, action) => {
             case DELETE_PLANT:
                 return { 
                     ...state,
-                    plants: state.plants.filter(plant => plant.id !== action.payload)
+                    plants: action.payload.filter(plant => plant.id !== action.payload)
                 };
+            case FETCH_PLANTS_START:
+                return {
+                    ...state,
+                    isLoading: true,
+                    error: ''
+                }
+
+            case FETCH_PLANTS_FAIL:
+                return {
+                    ...state,
+                    isLoading: false,
+                    error: action.payload
+                }
+
+            case FETCH_PLANTS_SUCCESS:
+                return {
+                    ...state,
+                    plants: action.payload,
+                    isLoading: false,
+                    error: ''
+            }
+
   
             default: return state;
     }

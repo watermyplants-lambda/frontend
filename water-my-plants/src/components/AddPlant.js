@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react';
 // import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { postPlants } from '../store/actions/plantActions';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const AddPlant = ({ plantList, setPlantList }) => {
+// const AddPlant = (props) => {
     const { initialPlant } = useContext(PlantContext);
     const[addPlant, setAddPlant] = useState(initialPlant);
     // const { id } = useParams();
 
     const addNewPlant = (e) => {
         e.preventDefault();
-        // postPlants();
+        // props.postPlants();
         axiosWithAuth()
         .post(`/api/users/1/plants`, addPlant)
         .then(res => {
@@ -103,4 +105,10 @@ const AddPlant = ({ plantList, setPlantList }) => {
     )
 }
 
-export default AddPlant;
+const mapStateToProps = state => {
+    return {
+        plants: state.plants
+    }
+}
+
+export default connect(mapStateToProps, { postPlants })(AddPlant);

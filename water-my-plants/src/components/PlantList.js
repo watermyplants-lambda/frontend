@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 // import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { fetchPlants } from '../store/actions/plantActions';
 import AddPlant from './AddPlant';
 
-const PlantList = () => {
+const PlantList = (props) => {
     const { initialPlant } = useContext(PlantContext);
     const[editing, setEditing] = useState(false);
     const[plantToEdit, setPlantToEdit] = useState(initialPlant);
@@ -12,19 +14,7 @@ const PlantList = () => {
     // const { id } = useParams();
 
     useEffect(() => {
-        const fetchPlants = () => {
-            axiosWithAuth()
-                .get('/api/users/1/plants')
-                // .get(`/api/users/${id}/plants`)
-                .then(res => {
-                    console.log(res)
-                    setPlantList(res.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                });
-          };
-          fetchPlants();
+        props.fetchPlants()
     }, [])
 
     const editPlant = (plant) => {
@@ -38,9 +28,9 @@ const PlantList = () => {
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => {
                 setEditing(false)
-                setPlantList(plantList.map(plant => {
+                props.plants.map(plant => {
                     return plant.id === plantToEdit.id ? res.data : plant;
-                }));
+                });
             })
             .catch(err => {
                 console.log(err)
@@ -51,7 +41,7 @@ const PlantList = () => {
         axiosWithAuth()
             .delete(`/api/plants/${plant.id}`)
             .then(res => {
-                setPlantList(plantList.filter(plant => plant.id !== res.data))
+                props.plants.filter(plant => plant.id !== res.data)
             })
             .catch(err => {
                 console.log(err)
@@ -62,7 +52,7 @@ const PlantList = () => {
         <div className="plants-wrapper">
             <p>My Plants!</p>
             <ul>
-                {plantList.map(plant => (
+                {props.plants.map(plant => (
                     <li key={plant.id} onClick={() => editPlant(plant)}>
                         <span>
                             <span className="delete" onClick={e => {
@@ -121,9 +111,18 @@ const PlantList = () => {
                 </form>
             )}
             <div className="spacer"/>
-            <AddPlant plantList={plantList} setPlantList={setPlantList}/>
+            {/* <AddPlant /> */}
+            <AddPlant plants={plantList} setPlantList={setPlantList}/>
         </div> 
     );
 };
 
-export default PlantList;
+const mapStateToProps = (state) => {
+    return {
+        isFetching: state.isFetching,
+        error: state.error,
+        plants: state.plants
+    }
+}
+
+export default connect(mapStateToProps, { fetchPlants })(PlantList);

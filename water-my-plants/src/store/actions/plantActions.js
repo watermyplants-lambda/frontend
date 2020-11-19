@@ -8,21 +8,23 @@ export const FETCH_PLANTS_START = 'FETCH_PLANTS_START';
 export const FETCH_PLANTS_FAIL = 'FETCH_PLANTS_FAIL';
 export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
 
-export const fetchPlants = () => {
-    return(dispatch) => {
+export const fetchPlants = () => dispatch => {
+    dispatch({ type: FETCH_PLANTS_START })
 
         axiosWithAuth()
             .get('/api/users/1/plants')
-            .then()
-            .catch()
-    };
+            .then(res => {
+                dispatch({ type: FETCH_PLANTS_SUCCESS, payload: res.data})
+            })
+            .catch(err => {
+                dispatch({ type: FETCH_PLANTS_FAIL, payload: err.response })
+            })
+
 };
 
-export const postPlants = (addPlant) => {
-    return(dispatch) => {
-
+export const postPlants = (addPlant) => dispatch => {
         axiosWithAuth()
-            .post('/api/plants', addPlant)
+            .post('/api/users/1/plants', addPlant)
             .then(res => dispatch({
                 type: ADD_PLANT,
                 payload: res.data
@@ -30,12 +32,9 @@ export const postPlants = (addPlant) => {
             .catch(err => {
                 console.log(err)
             })
-    };
 };
 
-export const saveEdit = (plantToEdit) => {
-    return(dispatch) => {
-
+export const saveEdit = (plantToEdit) => dispatch => {
         axiosWithAuth()
             .put(`/api/plants/${plantToEdit.id}`, plantToEdit)
             .then(res => dispatch({
@@ -45,12 +44,9 @@ export const saveEdit = (plantToEdit) => {
             .catch(err => {
                 console.log(err)
             })
-    };
 };
 
-export const deletePlant = (plant) => {
-    return(dispatch) => {
-        dispatch({ type: DELETE_PLANT })
+export const deletePlant = (plant) => dispatch => {
 
         axiosWithAuth()
             .delete(`/api/plants${plant.id}`, plant)
@@ -61,7 +57,6 @@ export const deletePlant = (plant) => {
             .catch(err => {
                 console.log(err)
             })
-    };
 };
 
 export const login = data => dispatch => {
