@@ -1,6 +1,6 @@
 import {
     // ADD_PLANT,
-    // DELETE_PLANT,
+    DELETE_PLANT,
     // EDIT_PLANT,
     FETCH_PLANTS_FAIL,
     FETCH_PLANTS_SUCCESS,
@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
             };
 
             case FETCH_PLANTS_START:
-                console.log('payload', action)
+                console.log('fetchPlants payload', action.payload)
                 return {
                     ...state,
                     isFetching: true,
@@ -73,11 +73,11 @@ const reducer = (state = initialState, action) => {
             //     plants: updatedPlants
             // };
   
-            // case DELETE_PLANT:
-            //     return { 
-            //         ...state,
-            //         plants: action.payload.filter(plant => plant.id !== action.payload)
-            //     };
+            case DELETE_PLANT:
+                return { 
+                    ...state,
+                    plants: action.payload.filter(plant => plant.id !== action.payload)
+                };
 
             // case ADD_PLANT:
             // return{

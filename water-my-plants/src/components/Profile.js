@@ -103,7 +103,7 @@ const Profile = () => {
                         <button onClick={() => setUpdate(false)}>Cancel</button>
                     </div>
                 </form>
-            )};
+            )}
         </div>
     );
 };

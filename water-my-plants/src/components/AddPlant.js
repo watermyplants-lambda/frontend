@@ -9,13 +9,13 @@ const AddPlant = ({ plantList, setPlantList }) => {
 // const AddPlant = (props) => {
     const { initialPlant } = useContext(PlantContext);
     const[addPlant, setAddPlant] = useState(initialPlant);
-    // const { id } = useParams();
+    const userID = localStorage.getItem("id")
 
     const addNewPlant = (e) => {
         e.preventDefault();
         // props.postPlants();
         axiosWithAuth()
-        .post(`/api/users/1/plants`, addPlant)
+        .post(`/api/users/${userID}/plants`, addPlant)
         .then(res => {
             // console.log(res)
             setPlantList([
