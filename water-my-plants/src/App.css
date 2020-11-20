@@ -51,7 +51,7 @@ body {
 }
 
 .plants-wrapper {
-  height: 100%;
+  height: auto;
   width: 91%;
   padding: 1rem;
   margin: 2rem;
@@ -126,6 +126,36 @@ button {
 .uploaded-image {
   width: "50px";
   height: "50px"
+}
+
+/* ------------- PROFILE PAGE STYLES  ------------- */
+.profile-wrapper {
+  height: auto;
+  width: auto;
+  padding: 1rem;
+  margin: 2rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-values {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ------------- FOOTER STYLES ------------- */

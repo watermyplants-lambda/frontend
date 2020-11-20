@@ -20,7 +20,7 @@ const NavBar = () => {
         <NavLink className='signup' to="/signup">
           Sign Up 
         </NavLink>
-        <NavLink classname="logout" to="/logout">Log Out</NavLink>
+        <NavLink className="logout" to="/logout">Log Out</NavLink>
       
       
       </div>
