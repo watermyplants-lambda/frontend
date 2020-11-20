@@ -12,7 +12,7 @@ export const fetchPlants = () => dispatch => {
     dispatch({ type: FETCH_PLANTS_START })
         const userID = localStorage.getItem("id")
     axiosWithAuth()
-      .get(`/api/users/${userID}/plants`)
+      .get(`/api/plants`)
       .then(res => {
           console.log('fetchPlants action', res.data)
           dispatch({ 
