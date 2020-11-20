@@ -10,7 +10,7 @@ import Profile from './Profile';
 import PlantList from './PlantList';
 import NavBar from './NavBar';
 import Footer from './Footer';
-import Logout from './Logout';
+import Logout from './logout';
 import Home from './Home';
 
 import '../App.css';
