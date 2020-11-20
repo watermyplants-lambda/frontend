@@ -24,8 +24,6 @@ const reducer = (state = initialState, action) => {
     const userID = localStorage.getItem("id")
     switch(action.type){
         case LOGIN_USER:
-            // console.log('reducer user ID: ', userID)
-            // console.log('state', state)
             return {
                 ...state,
                 ...state.user,
@@ -44,7 +42,6 @@ const reducer = (state = initialState, action) => {
             };
 
             case FETCH_PLANTS_START:
-                // console.log('fetchPlants payload', action.payload)
                 return {
                     ...state,
                     isFetching: true,

@@ -56,12 +56,10 @@ const Profile = () => {
         <div className="profile-wrapper">
             <div className="profile-values">
                 <h2>{userValues.firstName}'s Profile</h2>
-                <div className="user">
                     <p>First Name: {userValues.firstName}</p>
                     <p>Last Name: {userValues.lastName}</p>
                     <p>Email: {userValues.email}</p>
                     <button onClick = {onClickEdit}>Update My Info</button>
-                </div>
             </div>
             <div className="spacer"/>
             {update && (
