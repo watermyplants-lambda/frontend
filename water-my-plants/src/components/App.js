@@ -52,7 +52,7 @@ function App() {
             <Footer />
         </div>
       </Router>
-    </PlantContext.Provider>
+     </PlantContext.Provider>
   );
 };
 

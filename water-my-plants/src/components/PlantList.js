@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { PlantContext } from '../contexts/PlantContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { fetchPlants } from '../store/actions/plantActions';
+import { fetchPlants, deletePlant } from '../store/actions/plantActions';
 import AddPlant from './AddPlant';
 
 const PlantList = (props) => {
@@ -125,5 +125,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps, 
-    { fetchPlants }
+    { fetchPlants, deletePlant }
     )(PlantList);

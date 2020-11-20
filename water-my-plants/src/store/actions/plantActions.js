@@ -38,7 +38,7 @@ export const login = data => dispatch => {
 export const postPlants = (addPlant) => dispatch => {
     const userID = localStorage.getItem("id")
         axiosWithAuth()
-            .post(`/api/users/${userID}/plants`, addPlant)
+            .post(`/api/plants`, addPlant)
             .then(res => dispatch({
                 type: ADD_PLANT,
                 payload: res.data
