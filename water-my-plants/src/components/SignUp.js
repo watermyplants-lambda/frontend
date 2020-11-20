@@ -28,11 +28,10 @@ const SignUp = () => {
     const [signupDisabled, setSignupDisabled] = useState(initialSignupDisabled);
     const history = useHistory();
 
-    const postRegisterUser = newUser => {
+    const postRegisterUser = (newUser) => {
         axiosWithAuth()
             .post('/api/auth/register', newUser)
             .then((res) => {
-                // console.log(res)
                 window.localStorage.setItem('token', res.data.token)
                 setSignUpUser([...signUpUser, res.data]);
                 setSignUpForm(initialSignupValues)
@@ -87,8 +86,8 @@ const SignUp = () => {
     };
 
     const onChange = evt =>{
-        const { name, value } = evt.target
-        changeSignup(name, value)
+        const { name, value } = evt.target;
+        changeSignup(name, value);
     };
 
     return(

@@ -71,6 +71,7 @@ const reducer = (state = initialState, action) => {
             //     }
             //     return plant;
             // });
+            
             // return{
             //     ...state,
             //     plants: updatedPlants
